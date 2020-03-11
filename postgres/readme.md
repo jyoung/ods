@@ -41,13 +41,15 @@ Create the ods database
 
 `createdb ods`
 
-Create the ods user
+Create the ods user, follow the prompts
 
 `createuser --interactive --pwprompt`
 
+TODO: create the catalog schema and remove it from the migrations
+
 Grant permissions to the ods user
 
-`grant all on all tables in schema catalog to ods with grant option;` 
+`grant select, insert, update, delete on all tables in schema catalog to ods with grant option;` 
 
 Grant usage permission to the schema
 
