@@ -5,7 +5,7 @@ docker volume create --driver local --name=pgvolume
 docker network create --driver bridge pgnetwork
 
 #install postgres
-docker run --publish 5432:543 --volume=pgvolume:/pgdata --env-file=pg-env.list --name=postgres --hostname=postgres --network=pgnetwork --detach crunchydata/crunchy-postgres:centos7-10.9-2.4.1
+docker run --publish 5432:5432 --volume=pgvolume:/pgdata --env-file=pg-env.list --name=postgres --hostname=postgres --network=pgnetwork --detach crunchydata/crunchy-postgres:centos7-10.9-2.4.1
 
 # create the pgadmin volumn
 docker volume create --driver local --name=pga4volume

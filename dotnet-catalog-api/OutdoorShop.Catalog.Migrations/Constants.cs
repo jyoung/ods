@@ -4,18 +4,18 @@
     {
         public static class Schemas 
         {
-            public static string Catalog = "Catalog";
+            public static string Catalog = "catalog";
         }
 
         public static class Tables
         {
-            public static string Brand = "Brand";
+            public static string Brand = "brand";
         }
 
         public static class Columns
         {
-            public static string Id = "Id";
-            public static string Name = "Name";
+            public static string Id = "id";
+            public static string Name = "name";
         }
     }
 }

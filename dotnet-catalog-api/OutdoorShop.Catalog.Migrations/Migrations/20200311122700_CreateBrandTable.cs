@@ -7,7 +7,8 @@
     {
         public override void Down()
         {
-            Delete.Table(Constants.Tables.Brand);
+            Delete.Table(Constants.Tables.Brand)
+                .InSchema(Constants.Schemas.Catalog);
         }
 
         public override void Up()
