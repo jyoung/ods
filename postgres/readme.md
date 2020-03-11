@@ -25,6 +25,34 @@ Replace the <config_value> value with your information.
 8. Enter your username and password from pg-env
 9. Select 'Save'
 
+## Setup Users
+
+The Catalog API uses two database users; one to execute migrations, the other to execute commands.
+
+The `postgres` user is used in the Catalog Migrations application to execute the DDL.
+
+The `ods` user is used the Catalog API to execute DML
+
+Remote into the postgres instance
+
+`docker exec -it postgres ./bin/bash`
+
+Create the ods database
+
+`createdb ods`
+
+Create the ods user
+
+`createuser --interactive --pwprompt`
+
+Grant permissions to the ods user
+
+`grant all on all tables in schema catalog to ods with grant option;` 
+
+Grant usage permission to the schema
+
+`grant usage on schema catalog to ods;`
+
 
 ## Managing
 To stop the containers
