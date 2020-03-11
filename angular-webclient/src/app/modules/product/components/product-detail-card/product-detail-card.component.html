@@ -1,0 +1,42 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{product.title}}</h5>
+        <div class="card-text">{{product.shortDescription}}</div>
+        <hr />
+        <p class="price">{{product.salePrice.value | currency}}</p>
+        <hr />
+        <div class="form-group">
+            <label for="colors">Color</label>
+            <select class="custom-select" id="colors">
+                <option selected>Select</option>
+                <option value="1">Blue</option>
+                <option value="2">Red</option>
+                <option value="3">Green</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Quantity</label>
+            <div class="input-group w-25 mb-3">
+                <input type="text" class="form-control" id="quantity" name="quantity" min="1" max="100" value="1">
+            </div>
+        </div>
+        <div class="product-reviews p-3 mb-2 ">
+            <span class="review-count">3 Reviews</span>
+            <i class="fa fa-star active"></i>
+            <i class="fa fa-star active"></i>
+            <i class="fa fa-star active"></i>
+            <i class="fa fa-star active"></i>
+            <i class="fa fa-star inactive"></i>
+            <span class="average">(4/5)</span>
+            <a class="pull-right" href="#reviews">All Reviews</a>
+        </div>
+        <div class="button-bar">
+            <button class="btn btn-lg text-uppercase cart" (click)="addToCart()">
+                <i class="fa fa-shopping-cart"></i><span>Add To Cart</span>
+            </button>
+            <button class="btn btn-sm text-uppercase wishlist" (click)="addToWishlist()">
+                <span>Add To Wishlist</span>
+            </button>
+        </div>
+    </div>
+</div>

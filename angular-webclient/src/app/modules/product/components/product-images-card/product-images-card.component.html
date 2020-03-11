@@ -1,0 +1,12 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <a href="">
+            <img class="img-fluid" src="{{currentImage}}" />
+        </a>
+        <div class="gallery">
+            <div class="thumbnail" *ngFor="let image of product.additionalImages">
+                <img src="{{image.largeUrl}}" (click)="switchImage($event)" />
+            </div>
+        </div>
+    </div>
+</div>

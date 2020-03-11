@@ -1,0 +1,29 @@
+<div class="container" *ngIf="product$ | async; let product; else loading;">
+    <div class="row cards">
+        <div class="col-12 col-lg-6">
+            <app-product-images-card [product]="product"></app-product-images-card>
+        </div>
+        <div class="col-12 col-lg-6">
+            <app-product-detail-card [product]="product"></app-product-detail-card>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <app-product-copy-card [product]='product'></app-product-copy-card>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12" id="reviews">
+            <app-product-reviews-card [product]='product'></app-product-reviews-card>
+        </div>
+    </div>
+</div>
+<ng-template #loading>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p class="text-center">Loading ...</p>
+            </div>
+        </div>
+    </div>
+</ng-template>

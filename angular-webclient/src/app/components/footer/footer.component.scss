@@ -1,0 +1,62 @@
+@import "../../../variables.scss";
+
+footer {
+    color: #fff;
+    display: block;
+    background: #1a1a1a;
+    border-top: 3px solid $accent-color;
+    
+
+    .top-area {
+        padding-top: 30px;
+        background: #1f1f1f;
+
+        .list-heading {
+            color: white;
+            font-size: 1.2em;
+            list-style-type: none;
+            word-wrap: none;
+        }
+        ul {
+            list-style-type: disc;
+            list-style-position: inside;
+            
+        }
+        ul.social {
+            list-style-type: none;
+            li {
+                display: inline;
+                
+            }
+            a {
+                text-decoration: none;
+            }
+            .fa {
+                float: left;
+                margin-right: 7px;
+                display: block;
+                width: 35px;
+                height: 35px;
+                text-align: center;
+                background: #666;
+                color: #fff;
+                border-radius: 50%;
+                line-height: 35px;
+            }
+        }
+    }
+
+    .copyright {
+        padding: 10px 0;
+        background: #000;
+        font-size: 1.8em;
+        ul {
+            list-style-type: none;
+        }
+
+        li {
+            display: inline;
+            margin-right: 5px;
+        }
+    }
+}

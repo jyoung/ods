@@ -1,0 +1,109 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "duncan",
+            "country": "australia",
+            "password": "123"
+        },
+        {
+            "id": 2,
+            "username": "sarah",
+            "country": "england",
+            "password": "123"
+        },
+        {
+            "id": 3,
+            "username": "admin",
+            "country": "usa",
+            "password": "123"
+        },
+        {
+            "username": "test2",
+            "password": "123",
+            "id": 4
+        }
+    ],
+    "profiles": [
+        {
+            "id": 1,
+            "userId": 1,
+            "job": "Plumber"
+        },
+        {
+            "id": 2,
+            "userId": 2,
+            "job": "developer"
+        },
+        {
+            "id": 3,
+            "userId": 3,
+            "job": "Manager"
+        }
+    ],
+    "featuredproducts": [
+        {
+            "id": 1234,
+            "title": "Awesome Fly Rod",
+            "price": {
+                "currency": "US",
+                "value": 12.45
+            },
+            "salePrice": {
+                "currency": "US",
+                "value": 12.45
+            },
+            "primaryImage": {
+                "smallUrl": "https://dummyimage.com/225x150/55595c/fff.png&text=Main+Product+Image",
+                "largeUrl": "https://dummyimage.com/800x800/55595c/fff.png&text=Main+Product+Image"
+            },
+            "shortDescription": "This is a short description."
+        }
+    ],
+    "products": [
+        {
+            "id": 1234,
+            "title": "Awesome Fly Rod",
+            "shortDescription": "This is a short description.",
+            "brand": {
+                "id": "B1234",
+                "name": "Awesome Rods"
+            },
+            "copy": {
+                "description": "This is a much longer description.",
+                "notes": "These are customized notes from the staff regarding their thoughts on the product.",
+                "bullets": [
+                    "One",
+                    "Two",
+                    "Three"
+                ]
+            },
+            "price": {
+                "currency": "US",
+                "value": 12.45
+            },
+            "salePrice": {
+                "currency": "US",
+                "value": 12.45
+            },
+            "primaryImage": {
+                "smallUrl": "https://dummyimage.com/225x150/55595c/fff.png&text=Main+Product+Image",
+                "largeUrl": "https://dummyimage.com/800x800/55595c/fff.png&text=Main+Product+Image"
+            },
+            "additionalImages": [
+                {
+                    "smallUrl": "https://dummyimage.com/225x150/04B431/fff.png&text=Additional+Product+Image",
+                    "largeUrl": "https://dummyimage.com/800x800/04B431/fff.png&text=Additional+Product+Image"
+                },
+                {
+                    "smallUrl": "https://dummyimage.com/225x150/61210B/fff.png&text=Additional+Product+Image",
+                    "largeUrl": "https://dummyimage.com/800x800/61210B/fff.png&text=Additional+Product+Image"
+                },
+                {
+                    "smallUrl": "https://dummyimage.com/225x150/FE2EC8/fff.png&text=Additional+Product+Image",
+                    "largeUrl": "https://dummyimage.com/800x800/FE2EC8/fff.png&text=Additional+Product+Image"
+                }
+            ]
+        }
+    ]
+}

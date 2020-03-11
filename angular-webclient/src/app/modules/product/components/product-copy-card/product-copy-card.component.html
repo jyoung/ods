@@ -1,0 +1,10 @@
+<div class="card mb-3 ">
+    <div class="card-header text-uppercase"><i class="fa fa-align-justify"></i> Description</div>
+    <div class="card-body">
+        <p class="card-text">{{product.copy.description}}</p>
+        <ul>
+            <li *ngFor="let bullet of product.copy.bullets">{{bullet}}</li>
+        </ul>
+        <p class="card-text">{{product.copy.notes}}</p>
+    </div>
+</div>

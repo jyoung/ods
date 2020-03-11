@@ -1,0 +1,36 @@
+@import '../../../../../variables.scss';
+
+.price {
+    color: $accent-color;
+    font-weight: 500;
+    font-size: 2.0em;
+}
+.product-reviews {
+    .review-count {
+        margin-right: 5px;
+    }
+
+    .average {
+        margin-left: 5px;
+    }
+
+    .fa-star.active {
+        color: gold;
+    }
+    .fa-star.inactive {
+        color: #c6c6c6;
+    }
+}
+
+.button-bar {
+    .wishlist {
+        margin-left: 10px;
+    }
+    .cart {
+        background: $accent-color;
+        color: #fff;
+        i {
+            margin-right: 5px;
+        }
+    }
+}

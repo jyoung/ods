@@ -1,0 +1,19 @@
+@import '../../../../variables.scss';
+
+.box-shadow { 
+    box-shadow: 3px 6px 7px rgba(0, 0, 0, .09); 
+}
+
+.btn {
+    color: #fff;
+    background: $accent-color;
+}
+
+.badge {
+    color: #fff;
+    background: $accent-color;
+}
+
+.card-title a {
+    color: $accent-color;
+}
