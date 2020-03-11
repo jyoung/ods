@@ -1,0 +1,42 @@
+# Build ASP.NET Core project using Azure Pipelines
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
+
+trigger:
+  branches:
+    include: 
+    - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+  
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core sdk'
+  inputs:
+    packageType: sdk
+    version: 3.1.101
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- script: dotnet build OutdoorShop.Catalog.sln --configuration $(buildConfiguration)
+  displayName: "Build"
+
+- script: dotnet test OutdoorShop.Catalog.Tests.sln --configuration $(buildConfiguration) --test-adapter-path:. --logger:"xunit;LogFilePath=test_results.trx"
+  displayName: "Test"
+
+- script:  dotnet publish OutdoorShop.Catalog.Api.sln --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
+  displayName: "Publish"
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: XUnit
+    testResultsFiles: '**/*.trx'
+  displayName: "Publish Test Results"
+
+- task: PublishBuildArtifacts@1
+  displayName: "Publish Artifacts"
+
+

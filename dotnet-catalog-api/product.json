@@ -1,0 +1,57 @@
+{
+    "Id": "123ABCD",
+    "Title": "A Sample Prduct",
+    "ShortDescription": "A short description of the sample proudct",
+    "Brand": {
+        "Id": "1234ABC",
+        "Name": "Cool Brand"
+    },
+    "Copy": {
+        "Description": "This is a really long description of the product",
+        "Notes": "Staff Notes on the Product",
+        "Bullets": [
+            "Bullet One",
+            "Bullet Two"
+        ]
+    },
+    "Price": {
+        "Currency": "US",
+        "Value": 12.25
+    },
+    "SalePrice": {
+        "Curreny": "US",
+        "Value": 12.25
+    },
+    "PrimaryImage": {
+        "SmallUrl": "https://via.placeholder.com/150x150",
+        "LargeUrl": "https://via.placeholder.com/450x450"
+    },
+    "AdditionalImages": [
+        {
+            "SmallUrl": "https://via.placeholder.com/150x150",
+            "LargeUrl": "https://via.placeholder.com/450x450"
+        },
+        {
+            "SmallUrl": "https://via.placeholder.com/150x150",
+            "LargeUrl": "https://via.placeholder.com/450x450"
+        }
+    ],
+    "Categories": [
+        {
+            "Id": "123456",
+            "Name": "Category 1"
+        },
+        {
+            "Id": "789456",
+            "Name": "Category 2"
+        }
+    ],
+    "Shipping": {
+        "Dimensions": {
+            "Height": 13.0,
+            "Width": 26.35,
+            "Length": 1.8
+        },
+        "Weight": 1.77
+    }
+}
