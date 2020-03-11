@@ -33,7 +33,7 @@
                 .AddFluentMigratorCore()
                 .ConfigureRunner(r => {
                     r.AddPostgres();
-                    r.WithGlobalConnectionString(Configuration["postgres"]);
+                    r.WithGlobalConnectionString(Configuration["postgres-admin"]);
                     r.ScanIn(typeof(Program).Assembly).For.Migrations();
                 })
                 .AddLogging(l => l.AddFluentMigratorConsole())
