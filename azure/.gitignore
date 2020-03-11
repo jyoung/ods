@@ -1,0 +1,33 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+\bin
+\obj
+
+# dependencies
+
+# IDE - Rider
+.idea
+*.DotSettings.user
+
+# IDE - VSCode
+.vscode\*
+!.vscode\settings.json
+!.vscode\tasks.json
+!.vscode\launch.json
+!.vscode\extensions.json
+
+# IDE - Visual Studio
+.vs/*
+*.csproj.user
+
+# misc
+
+# e2e
+
+# test results
+test_results.trx
+
+# System Files
+.DS_Store
+Thumbs.db
