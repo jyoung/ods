@@ -1,9 +1,9 @@
-using System;
-using OutdoorShop.Catalog.Domain.Product;
-
 namespace OutdoorShop.Catalog.Seed
 {
-    public class Product
+    using System;
+    using OutdoorShop.Catalog.Domain.Product;
+
+    public class Data
     {
         public int Category1Id { get; set; }
         public string Category1Name { get; set; }

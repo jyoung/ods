@@ -15,12 +15,7 @@ namespace OutdoorShop.Catalog.Seed
     using OutdoorShop.Catalog.Domain.Category;
     using OutdoorShop.Catalog.Domain.Product;
 
-    public interface ICosmosDbDataLoader
-    {
-        Task Load();
-    }
-
-    public class CosmosDbDataLoader : ICosmosDbDataLoader
+    public class CosmosDbDataLoader : IDataLoader
     {
         private const string DatabaseId = "Catalog";
 
@@ -37,7 +32,7 @@ namespace OutdoorShop.Catalog.Seed
             this.key = key;
         }
 
-        public async Task Load()
+        public async Task LoadAsync()
         {
             Console.Out.WriteLine("Loading Data");
 
@@ -54,6 +49,11 @@ namespace OutdoorShop.Catalog.Seed
             await CreateCategories();
         }
 
+        public void Load()
+        {
+            throw new NotImplementedException();
+        }
+
         private void LoadCSV()
         {
             var index = 1000;
@@ -64,7 +64,7 @@ namespace OutdoorShop.Catalog.Seed
             {
                 var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
                 
-                foreach (var product in csvReader.GetRecords<Product>())
+                foreach (var product in csvReader.GetRecords<Data>())
                 {
                     Documents.Add(product.CreateDocument(index));
 

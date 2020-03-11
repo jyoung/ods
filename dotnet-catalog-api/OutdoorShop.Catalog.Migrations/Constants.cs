@@ -9,7 +9,7 @@
 
         public static class Tables
         {
-            public static string Brand = "brand";
+            public static string Brand = "brands";
         }
 
         public static class Columns

@@ -26,18 +26,19 @@
                 .Configure<AzureAccountDetails>(Configuration.GetSection(nameof(AzureAccountDetails)))
                 .AddOptions()
                 .AddSingleton<ISecretRevealer, SecretRevealer>()
-                .AddSingleton<ICosmosDbDataLoader>(x => {
-                    var options = x.GetService<IOptions<AzureAccountDetails>>();
-                    return new CosmosDbDataLoader(new Uri(options.Value.CosmosDbEndpoint), options.Value.CosmosDbKey);
+                .AddSingleton<IDataLoader>(x => {
+                    //var options = x.GetService<IOptions<AzureAccountDetails>>();
+                    //return new CosmosDbDataLoader(new Uri(options.Value.CosmosDbEndpoint), options.Value.CosmosDbKey);
+                    return new PostgresDataLoader(Configuration["postgres-user"]);
                 })
                 .BuildServiceProvider();
 
             var serviceProvider = services.BuildServiceProvider();
             
-            var dataLoader = serviceProvider.GetService<ICosmosDbDataLoader>();
+            var dataLoader = serviceProvider.GetService<IDataLoader>();
 
-            dataLoader.Load()
-                .Wait();
+            dataLoader.LoadAsync().Wait();
+        
           }
     }
 }
