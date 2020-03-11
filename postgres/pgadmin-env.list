@@ -1,0 +1,3 @@
+PGADMIN_SETUP_EMAIL=<your_username>
+PGADMIN_SETUP_PASSWORD=<your_password>
+SERVER_PORT=5050

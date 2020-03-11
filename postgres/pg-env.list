@@ -1,0 +1,8 @@
+PG_MODE=primary
+PG_PRIMARY_USER=postgres
+PG_PRIMARY_PASSWORD=<primary_password>
+PG_DATABASE=ods
+PG_USER=<your_username>
+PG_PASSWORD=<your_password>
+PG_ROOT_PASSWORD=<root_password>
+PG_PRIMARY_PORT=5432
