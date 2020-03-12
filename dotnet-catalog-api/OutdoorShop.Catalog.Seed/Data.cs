@@ -5,6 +5,7 @@ namespace OutdoorShop.Catalog.Seed
 
     public class Data
     {
+        public string ItemNumber { get; set; }
         public int Category1Id { get; set; }
         public string Category1Name { get; set; }
         public int Category2Id { get; set; }
