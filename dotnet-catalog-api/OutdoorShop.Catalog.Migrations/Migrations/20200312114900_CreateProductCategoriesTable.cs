@@ -1,6 +1,7 @@
 ﻿namespace OutdoorShop.Catalog.Migrations.Migrations
 {
     using FluentMigrator;
+    using OutdoorShop.Catalog.Domain;
     using System;
 
     [Migration(20200312114900)]
@@ -8,29 +9,29 @@
     {
         public override void Down()
         {
-            Delete.ForeignKey(Constants.ForeignKeys.ProductCateoriesToProducts)
-                .OnTable(Constants.Tables.ProductCategories)
-                .InSchema(Constants.Schemas.Catalog);
+            Delete.ForeignKey(DataConstants.ForeignKeys.ProductCateoriesToProducts)
+                .OnTable(DataConstants.Tables.ProductCategories)
+                .InSchema(DataConstants.Schemas.Catalog);
 
-            Delete.Table(Constants.Tables.ProductCategories)
-                .InSchema(Constants.Schemas.Catalog);
+            Delete.Table(DataConstants.Tables.ProductCategories)
+                .InSchema(DataConstants.Schemas.Catalog);
         }
 
         public override void Up()
         {
-            Create.Table(Constants.Tables.ProductCategories)
-                .InSchema(Constants.Schemas.Catalog)
-                .WithColumn(Constants.Columns.Id).AsInt64().PrimaryKey().Identity()
-                .WithColumn(Constants.Columns.ProductId).AsInt64().NotNullable().Indexed()
-                .WithColumn(Constants.Columns.CategoryId).AsInt64().NotNullable().Indexed();
+            Create.Table(DataConstants.Tables.ProductCategories)
+                .InSchema(DataConstants.Schemas.Catalog)
+                .WithColumn(DataConstants.Columns.Id).AsInt64().PrimaryKey().Identity()
+                .WithColumn(DataConstants.Columns.ProductId).AsInt64().NotNullable().Indexed()
+                .WithColumn(DataConstants.Columns.CategoryId).AsInt64().NotNullable().Indexed();
 
-            Create.ForeignKey(Constants.ForeignKeys.ProductCateoriesToProducts)
-                .FromTable(Constants.Tables.ProductCategories)
-                    .InSchema(Constants.Schemas.Catalog)
-                    .ForeignColumn(Constants.Columns.ProductId)
-                .ToTable(Constants.Tables.Products)
-                    .InSchema(Constants.Schemas.Catalog)
-                    .PrimaryColumn(Constants.Columns.Id);
+            Create.ForeignKey(DataConstants.ForeignKeys.ProductCateoriesToProducts)
+                .FromTable(DataConstants.Tables.ProductCategories)
+                    .InSchema(DataConstants.Schemas.Catalog)
+                    .ForeignColumn(DataConstants.Columns.ProductId)
+                .ToTable(DataConstants.Tables.Products)
+                    .InSchema(DataConstants.Schemas.Catalog)
+                    .PrimaryColumn(DataConstants.Columns.Id);
 ;
         }
     }
