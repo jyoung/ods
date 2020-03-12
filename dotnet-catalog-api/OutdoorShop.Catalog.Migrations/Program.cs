@@ -3,6 +3,7 @@
     using FluentMigrator.Runner;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Npgsql;
     using System;
 
     class Program
@@ -44,6 +45,24 @@
         {
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
             runner.MigrateUp();
+            GrantPermissions();
+        }
+
+        private static void GrantPermissions()
+        {
+            const string permissionsSql = "grant select, insert, update, delete on all tables in schema catalog to ods with grant option";
+            const string usageSql = "grant usage, select on all sequences in schema catalog to ods";
+
+            var combinedSql = permissionsSql + ";" + usageSql + ";";
+
+            using (var connection = new NpgsqlConnection(Configuration["postgres-admin"]))
+            {
+                connection.Open();
+                using (var command = new NpgsqlCommand(combinedSql, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }
