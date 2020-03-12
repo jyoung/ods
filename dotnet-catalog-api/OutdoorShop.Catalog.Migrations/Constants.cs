@@ -31,8 +31,8 @@
             public static string RetailCurrency = "retail_currency";
             public static string BrandId = "brand_id";
             public static string ItemNumber = "item_number";
-            public static string SmallImageUrl = "small_img_url";
-            public static string LargeImageUrl = "large_img_url";
+            public static string SmallImageUrl = "small_image_url";
+            public static string LargeImageUrl = "large_image_url";
             public static string LongDescription = "long_description";
             public static string Notes = "notes";
             public static string Bullets = "bullets";
