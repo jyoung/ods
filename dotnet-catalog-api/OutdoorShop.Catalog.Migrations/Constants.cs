@@ -9,13 +9,16 @@
 
         public static class Tables
         {
-            public static string Brand = "brands";
+            public static string Brands = "brands";
+            public static string Categories = "categories";
         }
 
         public static class Columns
         {
             public static string Id = "id";
             public static string Name = "name";
+            public static string ImportId = "import_id";
+            public static string ParentId = "parent_id";
         }
     }
 }

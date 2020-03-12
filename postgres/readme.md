@@ -45,16 +45,21 @@ Create the ods user, follow the prompts
 
 `createuser --interactive --pwprompt`
 
-TODO: create the catalog schema and remove it from the migrations
+Log into the ODS database as the postgres user
+
+`psql -d ods -U postgres`
+
+Create the catalog schema
+
+`create schema catalog;`
+
+Grant ods usage and sequence permission to the schema
+
+`grant usage, select on all sequences in schema catalog to ods;`
 
 Grant permissions to the ods user
 
 `grant select, insert, update, delete on all tables in schema catalog to ods with grant option;` 
-
-Grant usage permission to the schema
-
-`grant usage on schema catalog to ods;`
-
 
 ## Managing
 To stop the containers
