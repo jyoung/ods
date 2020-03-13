@@ -1,4 +1,4 @@
-namespace OutdoorShop.Catalog.Api.Models
+namespace OutdoorShop.Catalog.Api.SharedModels
 {
     using System.Runtime.Serialization;
 
@@ -6,6 +6,6 @@ namespace OutdoorShop.Catalog.Api.Models
     public class ImageModel
     {
         public string SmallUrl { get; set; }
-        public string LargeUrl {get; set;}
+        public string LargeUrl { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace OutdoorShop.Catalog.Api.Product
     using System.Threading.Tasks;
     using AutoMapper;
     using MediatR;
-    using OutdoorShop.Catalog.Api.Models;
+    using OutdoorShop.Catalog.Api.SharedModels;
     using OutdoorShop.Catalog.Domain;
     using OutdoorShop.Catalog.Domain.Product;
 

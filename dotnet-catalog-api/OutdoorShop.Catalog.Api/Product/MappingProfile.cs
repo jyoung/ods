@@ -8,7 +8,7 @@ namespace OutdoorShop.Catalog.Api.Product
         public MappingProfile() 
         {
             // document -> model
-            CreateMap<ProductDocument, GetById.Model>();
+        //    CreateMap<ProductDocument, GetById.Model>();
             
             // model -> document
         }

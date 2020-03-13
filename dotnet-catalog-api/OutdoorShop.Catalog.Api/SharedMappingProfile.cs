@@ -1,17 +1,17 @@
 namespace OutdoorShop.Catalog.Api
 {
     using AutoMapper;
-    using OutdoorShop.Catalog.Api.Models;
+    using OutdoorShop.Catalog.Api.SharedModels;
     using OutdoorShop.Catalog.Domain.Product;
 
-    public class MappingProfile : Profile
+    public class SharedMappingProfile : Profile
     {
-        public MappingProfile() 
+        public SharedMappingProfile() 
         {
             // document -> model
             CreateMap<Brand, BrandModel>();
             CreateMap<Copy, CopyModel>();
-            CreateMap<Image, ImageModel>();
+          //  CreateMap<Image, ImageModel>();
             CreateMap<Category, CategoryModel>();
             CreateMap<Price, PriceModel>();
 

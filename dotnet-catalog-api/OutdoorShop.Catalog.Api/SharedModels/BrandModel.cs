@@ -1,4 +1,4 @@
-namespace OutdoorShop.Catalog.Api.Models
+namespace OutdoorShop.Catalog.Api.SharedModels
 {
     using System.Runtime.Serialization;
 

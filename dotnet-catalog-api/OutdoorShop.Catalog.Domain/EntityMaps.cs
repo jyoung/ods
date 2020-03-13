@@ -3,6 +3,7 @@
     using Dapper.FluentMap.Configuration;
     using OutdoorShop.Catalog.Domain.Brand;
     using OutdoorShop.Catalog.Domain.Category;
+    using OutdoorShop.Catalog.Domain.Product;
 
     public static class EntityMaps
     {
@@ -10,6 +11,7 @@
         {
             config.AddMap(new BrandEntityMap());
             config.AddMap(new CategoryEntityMap());
+            config.AddMap(new ProductEntityMap());
         }
     }
 }

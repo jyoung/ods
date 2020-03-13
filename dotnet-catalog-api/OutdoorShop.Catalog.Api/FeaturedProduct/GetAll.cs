@@ -6,9 +6,8 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
     using System.Threading.Tasks;
     using AutoMapper;
     using MediatR;
-    using OutdoorShop.Catalog.Api.Models;
-    using OutdoorShop.Catalog.Domain;
-    using OutdoorShop.Catalog.Domain.Product;
+    using OutdoorShop.Catalog.Api.SharedModels;
+    using OutdoorShop.Catalog.Domain.Product.Actions;
 
     public class GetAll
     {
@@ -19,12 +18,12 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
 
         public class QueryHandler : IRequestHandler<Query, IEnumerable<Model>>
         {
-            private readonly IDocumentRepository<FeaturedProductDocument> repository;
+            private readonly IMediator mediator;
             private readonly IMapper mapper;
 
-            public QueryHandler(IDocumentRepository<FeaturedProductDocument> repository, IMapper mapper)
+            public QueryHandler(IMediator mediator, IMapper mapper)
             {
-                this.repository = repository;
+                this.mediator = mediator;
                 this.mapper = mapper;
             }
 
@@ -38,19 +37,20 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
                 //  build a collection of models based on the product
                 //  cache the collection
                 //  return the collection
-                var documents = await repository.GetAllAsync();
-                return mapper.Map<IEnumerable<Model>>(documents);
+                var products = await mediator.Send(new GetFeaturedProducts.Query());
+
+                return mapper.Map<IEnumerable<Model>>(products);
             }
         }
 
         [DataContract(Name = "FeaturedProduct")]
         public class Model
         {
-            public int Id { get; set; }
+            public long Id { get; set; }
+            public string ItemNumber { get; set; }
             public string Title { get; set; }
             public string ShortDescription { get; set; }
             public PriceModel Price { get; set; }
-            public PriceModel SalePrice { get; set; }
             public ImageModel PrimaryImage { get; set; } 
         }
     }

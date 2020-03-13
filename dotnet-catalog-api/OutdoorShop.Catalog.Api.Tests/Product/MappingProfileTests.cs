@@ -11,7 +11,7 @@
         public void Mapping_Configuration_Is_Valid()
         {
             var configuration = new MapperConfiguration(cfg => {
-                cfg.AddProfile<MappingProfile>();
+                cfg.AddProfile<SharedMappingProfile>();
                 cfg.AddProfile<Product.MappingProfile>();
                 cfg.AddProfile<FeaturedProduct.MappingProfile>();
             });

@@ -1,4 +1,4 @@
-namespace OutdoorShop.Catalog.Api.Models
+namespace OutdoorShop.Catalog.Api.SharedModels
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
@@ -7,10 +7,10 @@ namespace OutdoorShop.Catalog.Api.Models
     public class CopyModel
     {
         public string Description { get; set; }
-        public string Notes {get; set; }
+        public string Notes { get; set; }
         public List<string> Bullets { get; set; }
 
-        public CopyModel() 
+        public CopyModel()
         {
             Bullets = new List<string>();
         }
