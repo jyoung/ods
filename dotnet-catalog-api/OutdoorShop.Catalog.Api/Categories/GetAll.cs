@@ -25,13 +25,31 @@
 
             public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
+                var parents = new List<Model>();
+
                 var categories = await mediator.Send(new GetAllCategories.Query());
+                              
+                var lookup = categories.ToLookup(x => x.ParentId);
 
-                var models = categories.Select(x => new Model { Id = x.Id, Name = x.Name }).ToList();
+                Model parent = null;
 
-                // TODO: Cache the models so we don't have to look them up again
+                foreach (var category in categories)
+                {
+                    if (category.ParentId.HasValue == false)
+                    {
+                        parent = new Model { Id = category.Id, Name = category.Name };
+                        parents.Add(parent);
+                    }
 
-                return models;
+                    if (lookup.Contains(category.Id) && parent != null)
+                    {
+                        parent.Children = lookup[category.Id].Select(x => new Model { Id = x.Id, Name = x.Name }).ToList();
+                    }
+                }
+
+                return parents;
+
+                // TODO: Cache the parents model so we don't have to look them up again
             }
         }
 
@@ -39,6 +57,13 @@
         {
             public long Id { get; set; }
             public string Name { get; set; }
+
+            public List<Model> Children { get; set; }
+
+            public Model()
+            {
+                Children = new List<Model>();
+            }
         }
     }
 }
