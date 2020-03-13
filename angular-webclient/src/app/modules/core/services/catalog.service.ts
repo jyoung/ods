@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError, } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { CatalogClient, FeaturedProduct } from '@core/clients/catalog-client';
+import { CatalogClient, FeaturedProduct, CategoryTreeItem } from '@core/clients/catalog-client';
 import { ObservableStore } from '@codewithdan/observable-store';
 
 export interface CatalogState {
   featuredProducts: FeaturedProduct[];
+  categories: CategoryTreeItem[];
 }
 
 export enum CatalogActions {
   InitState = 'INIT_STATE',
-  Load = 'LOAD_FEATURED_PRODUCTS'
+  LoadFeaturedProducts = 'LOAD_FEATURED_PRODUCTS',
+  LoadCategories = 'LOAD_CATEGORIES'
 }
 
 @Injectable({
@@ -40,10 +42,26 @@ export class CatalogService extends ObservableStore<CatalogState> {
     }
   }
 
+  public getCategories(): Observable<CategoryTreeItem[]> {
+    const categories = this.getState().categories;
+    if (categories) {
+      return of(categories);
+    } else {
+      return this.loadCategories();
+    }
+  }
+
   private loadFeaturedProducts(): Observable<FeaturedProduct[]> {
     return this.catalog.featuredproducts('1').pipe(map(fp => {
-      this.setState({ featuredProducts: fp }, CatalogActions.Load);
+      this.setState({ featuredProducts: fp }, CatalogActions.LoadFeaturedProducts);
       return fp;
+    }), catchError(this.handleError));
+  }
+
+  private loadCategories(): Observable<CategoryTreeItem[]> {
+    return this.catalog.categories('1').pipe(map(c => {
+      this.setState({ categories: c }, CatalogActions.LoadCategories);
+      return c;
     }), catchError(this.handleError));
   }
 

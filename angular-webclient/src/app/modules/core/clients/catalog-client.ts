@@ -14,23 +14,8 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 
 export const CATALOG_API_URL = new InjectionToken<string>('CATALOG_API_URL');
 
-export interface ICatalogClient {
-    /**
-     * Get a specific product by id
-     * @param api_version (optional) 
-     * @return Success
-     */
-    products(id: string, api_version: string | undefined): Observable<ProductDetail>;
-    /**
-     * Gets all featured products
-     * @param api_version (optional) 
-     * @return Success
-     */
-    featuredproducts(api_version: string | undefined): Observable<FeaturedProduct[]>;
-}
-
 @Injectable()
-export class CatalogClient implements ICatalogClient {
+export class CatalogClient {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -45,23 +30,23 @@ export class CatalogClient implements ICatalogClient {
      * @param api_version (optional) 
      * @return Success
      */
-    products(id: string, api_version: string | undefined): Observable<ProductDetail> {
+    products(id: string | null, api_version: string | undefined): Observable<ProductDetail> {
         let url_ = this.baseUrl + "/products/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: any = {
+        let options_ : any = {
             observe: "response",
-            responseType: "blob",
+            responseType: "blob",			
             headers: new HttpHeaders({
-                "api-version": api_version !== undefined && api_version !== null ? "" + api_version : "",
+                "api-version": api_version !== undefined && api_version !== null ? "" + api_version : "", 
                 "Accept": "application/json"
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processProducts(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -77,28 +62,28 @@ export class CatalogClient implements ICatalogClient {
 
     protected processProducts(response: HttpResponseBase): Observable<ProductDetail> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-                (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } };
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                let result200: any = null;
-                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = ProductDetail.fromJS(resultData200);
-                return _observableOf(result200);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ProductDetail.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status === 404) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                let result404: any = null;
-                let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result404 = ProblemDetails.fromJS(resultData404);
-                return throwException("Not Found", status, _responseText, _headers, result404);
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
         return _observableOf<ProductDetail>(<any>null);
@@ -113,16 +98,16 @@ export class CatalogClient implements ICatalogClient {
         let url_ = this.baseUrl + "/featuredproducts";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: any = {
+        let options_ : any = {
             observe: "response",
-            responseType: "blob",
+            responseType: "blob",			
             headers: new HttpHeaders({
-                "api-version": api_version !== undefined && api_version !== null ? "" + api_version : "",
+                "api-version": api_version !== undefined && api_version !== null ? "" + api_version : "", 
                 "Accept": "application/json"
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processFeaturedproducts(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -138,28 +123,86 @@ export class CatalogClient implements ICatalogClient {
 
     protected processFeaturedproducts(response: HttpResponseBase): Observable<FeaturedProduct[]> {
         const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-                (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } };
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                let result200: any = null;
-                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                if (Array.isArray(resultData200)) {
-                    result200 = [] as any;
-                    for (let item of resultData200)
-                        result200!.push(FeaturedProduct.fromJS(item));
-                }
-                return _observableOf(result200);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(FeaturedProduct.fromJS(item));
+            }
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
         return _observableOf<FeaturedProduct[]>(<any>null);
+    }
+
+    /**
+     * Gets all categories
+     * @param api_version (optional) 
+     * @return Success
+     */
+    categories(api_version: string | undefined): Observable<CategoryTreeItem[]> {
+        let url_ = this.baseUrl + "/categories";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",			
+            headers: new HttpHeaders({
+                "api-version": api_version !== undefined && api_version !== null ? "" + api_version : "", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCategories(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCategories(<any>response_);
+                } catch (e) {
+                    return <Observable<CategoryTreeItem[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CategoryTreeItem[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCategories(response: HttpResponseBase): Observable<CategoryTreeItem[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CategoryTreeItem.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CategoryTreeItem[]>(<any>null);
     }
 }
 
@@ -195,7 +238,7 @@ export class Brand implements IBrand {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
-        return data;
+        return data; 
     }
 }
 
@@ -247,7 +290,7 @@ export class Copy implements ICopy {
             for (let item of this.bullets)
                 data["bullets"].push(item);
         }
-        return data;
+        return data; 
     }
 }
 
@@ -288,7 +331,7 @@ export class Price implements IPrice {
         data = typeof data === 'object' ? data : {};
         data["currency"] = this.currency;
         data["value"] = this.value;
-        return data;
+        return data; 
     }
 }
 
@@ -328,7 +371,7 @@ export class Image implements IImage {
         data = typeof data === 'object' ? data : {};
         data["smallUrl"] = this.smallUrl;
         data["largeUrl"] = this.largeUrl;
-        return data;
+        return data; 
     }
 }
 
@@ -368,7 +411,7 @@ export class Category implements ICategory {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
-        return data;
+        return data; 
     }
 }
 
@@ -382,11 +425,11 @@ export class ProductDetail implements IProductDetail {
     id?: number;
     title?: string | undefined;
     shortDescription?: string | undefined;
-    brand?: Brand | undefined;
-    copy?: Copy | undefined;
-    price?: Price | undefined;
-    salePrice?: Price | undefined;
-    primaryImage?: Image | undefined;
+    brand?: Brand;
+    copy?: Copy;
+    price?: Price;
+    salePrice?: Price;
+    primaryImage?: Image;
     additionalImages?: Image[] | undefined;
     categories?: Category[] | undefined;
 
@@ -449,7 +492,7 @@ export class ProductDetail implements IProductDetail {
             for (let item of this.categories)
                 data["categories"].push(item.toJSON());
         }
-        return data;
+        return data; 
     }
 }
 
@@ -458,11 +501,11 @@ export interface IProductDetail {
     id?: number;
     title?: string | undefined;
     shortDescription?: string | undefined;
-    brand?: Brand | undefined;
-    copy?: Copy | undefined;
-    price?: Price | undefined;
-    salePrice?: Price | undefined;
-    primaryImage?: Image | undefined;
+    brand?: Brand;
+    copy?: Copy;
+    price?: Price;
+    salePrice?: Price;
+    primaryImage?: Image;
     additionalImages?: Image[] | undefined;
     categories?: Category[] | undefined;
 }
@@ -507,7 +550,7 @@ export class ProblemDetails implements IProblemDetails {
         data["status"] = this.status;
         data["detail"] = this.detail;
         data["instance"] = this.instance;
-        return data;
+        return data; 
     }
 }
 
@@ -523,9 +566,9 @@ export class FeaturedProduct implements IFeaturedProduct {
     id?: number;
     title?: string | undefined;
     shortDescription?: string | undefined;
-    price?: Price | undefined;
-    salePrice?: Price | undefined;
-    primaryImage?: Image | undefined;
+    price?: Price;
+    salePrice?: Price;
+    primaryImage?: Image;
 
     constructor(data?: IFeaturedProduct) {
         if (data) {
@@ -562,7 +605,7 @@ export class FeaturedProduct implements IFeaturedProduct {
         data["price"] = this.price ? this.price.toJSON() : <any>undefined;
         data["salePrice"] = this.salePrice ? this.salePrice.toJSON() : <any>undefined;
         data["primaryImage"] = this.primaryImage ? this.primaryImage.toJSON() : <any>undefined;
-        return data;
+        return data; 
     }
 }
 
@@ -570,17 +613,69 @@ export interface IFeaturedProduct {
     id?: number;
     title?: string | undefined;
     shortDescription?: string | undefined;
-    price?: Price | undefined;
-    salePrice?: Price | undefined;
-    primaryImage?: Image | undefined;
+    price?: Price;
+    salePrice?: Price;
+    primaryImage?: Image;
+}
+
+export class CategoryTreeItem implements ICategoryTreeItem {
+    id?: number;
+    name?: string | undefined;
+    children?: CategoryTreeItem[] | undefined;
+
+    constructor(data?: ICategoryTreeItem) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            if (Array.isArray(_data["children"])) {
+                this.children = [] as any;
+                for (let item of _data["children"])
+                    this.children!.push(CategoryTreeItem.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CategoryTreeItem {
+        data = typeof data === 'object' ? data : {};
+        let result = new CategoryTreeItem();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        if (Array.isArray(this.children)) {
+            data["children"] = [];
+            for (let item of this.children)
+                data["children"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ICategoryTreeItem {
+    id?: number;
+    name?: string | undefined;
+    children?: CategoryTreeItem[] | undefined;
 }
 
 export class ApiException extends Error {
     message: string;
-    status: number;
-    response: string;
+    status: number; 
+    response: string; 
     headers: { [key: string]: any; };
-    result: any;
+    result: any; 
 
     constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
         super();
@@ -612,12 +707,12 @@ function blobToText(blob: any): Observable<string> {
             observer.next("");
             observer.complete();
         } else {
-            let reader = new FileReader();
-            reader.onload = event => {
+            let reader = new FileReader(); 
+            reader.onload = event => { 
                 observer.next((<any>event.target).result);
                 observer.complete();
             };
-            reader.readAsText(blob);
+            reader.readAsText(blob); 
         }
     });
 }

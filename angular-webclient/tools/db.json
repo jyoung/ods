@@ -105,5 +105,48 @@
                 }
             ]
         }
+    ],
+    "categories": [
+        {
+            "id": 1,
+            "name": "One",
+            "children": [
+                {
+                    "id": 5,
+                    "name": "Five",
+                    "children": []
+                },
+                {
+                    "id": 6,
+                    "name": "Six",
+                    "children": []
+                },
+                {
+                    "id": 7,
+                    "name": "Seven",
+                    "children": []
+                },
+                {
+                    "id": 8,
+                    "name": "Eight",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Two",
+            "children": []
+        },
+        {
+            "id": 3,
+            "name": "Three",
+            "children": []
+        },
+        {
+            "id": 4,
+            "name": "Four",
+            "children": []
+        }
     ]
 }

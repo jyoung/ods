@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Runtime.Serialization;
 
     public class GetAll
     {
@@ -53,6 +54,7 @@
             }
         }
 
+        [DataContract(Name = "CategoryTreeItem")]
         public class Model
         {
             public long Id { get; set; }
