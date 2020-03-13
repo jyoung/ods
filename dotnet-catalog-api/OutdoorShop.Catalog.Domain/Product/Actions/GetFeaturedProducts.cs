@@ -41,6 +41,7 @@
         {
             if (list == null) throw new ArgumentNullException("list");
             if (sampleSize > list.Count) throw new ArgumentException("sampleSize may not be greater than list count", "sampleSize");
+
             var indices = new Dictionary<int, int>(); int index;
             var rnd = new Random();
 
