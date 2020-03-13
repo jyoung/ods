@@ -24,6 +24,9 @@
     using System.Linq;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
+    using Dapper.FluentMap;
+    using System.Data;
+    using Npgsql;
 
 #pragma warning disable CS1591
     public class Startup
@@ -39,8 +42,7 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AzureAccountDetails>(Configuration.GetSection(nameof(AzureAccountDetails)));
-            services.AddMediatR(typeof(Startup));
-            services.AddAutoMapper(typeof(Startup));
+
             services.AddOptions();
             services.AddControllers();
             services.AddApiVersioning(x => 
@@ -85,13 +87,8 @@
                 x.IncludeXmlComments(xmlPath);
             });
 
-            services.AddSingleton<DocumentClient>(x => {
-                var options = x.GetService<IOptions<AzureAccountDetails>>();
-                return new DocumentClient(new Uri(options.Value.CosmosDbEndpoint), options.Value.CosmosDbKey, serializerSettings: new JsonSerializerSettings {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                });
-            });
-            services.AddTransient(typeof(IDocumentRepository<>), typeof(DocumentRepository<>));
+            FluentMapper.Initialize(config => EntityMaps.Initialize(config));
+            AddApplicationServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -138,7 +135,20 @@
         }
         private void AddApplicationServices(IServiceCollection services)
         {
-         
+            string connectionString = this.Configuration["postgres-user"];
+                        
+            services.AddMediatR(typeof(Startup).Assembly, typeof(Entity).Assembly);
+            services.AddAutoMapper(typeof(Startup));
+            
+            services.AddSingleton<DocumentClient>(x => {
+                var options = x.GetService<IOptions<AzureAccountDetails>>();
+                return new DocumentClient(new Uri(options.Value.CosmosDbEndpoint), options.Value.CosmosDbKey, serializerSettings: new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+            });
+            services.AddTransient(typeof(IDocumentRepository<>), typeof(DocumentRepository<>));
+            services.AddScoped<IDbConnection>(db => new NpgsqlConnection(connectionString));
         }
 
         static OpenApiInfo CreateInfoForApiVersion( ApiVersionDescription description )
