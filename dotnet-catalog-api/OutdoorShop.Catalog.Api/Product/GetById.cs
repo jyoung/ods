@@ -1,5 +1,6 @@
 namespace OutdoorShop.Catalog.Api.Product
 {
+    using System.Collections.Generic;
     using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace OutdoorShop.Catalog.Api.Product
             public CopyModel Copy { get; set; }
             public PriceModel Price { get; set; }
             public ImageModel PrimaryImage { get; set; }
-            //public List<ImageModel> AdditionalImages { get; set; }
+            public List<ImageModel> AdditionalImages { get; set; }
             //public List<CategoryModel> Categories { get; set; }
         }
     }

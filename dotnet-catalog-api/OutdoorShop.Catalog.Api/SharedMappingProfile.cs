@@ -25,6 +25,10 @@ namespace OutdoorShop.Catalog.Api
                 .ForMember(dest => dest.LargeUrl, opts => opts.MapFrom(src => src.LargeImageUrl))
                 .ForMember(dest => dest.SmallUrl, opts => opts.MapFrom(src => src.SmallImageUrl));
 
+            CreateMap<ProductImageEntity, ImageModel>()
+               .ForMember(dest => dest.LargeUrl, opts => opts.MapFrom(src => src.LargeImageUrl))
+               .ForMember(dest => dest.SmallUrl, opts => opts.MapFrom(src => src.SmallImageUrl));
+
             CreateMap<ProductCopyEntity, CopyModel>()
                 .ForMember(dest => dest.Description, opts => opts.MapFrom(src => src.LongDescription))
                 .ForMember(dest => dest.Notes, opts => opts.MapFrom(src => src.Notes))

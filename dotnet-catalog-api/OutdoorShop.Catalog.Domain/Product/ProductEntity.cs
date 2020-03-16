@@ -1,4 +1,6 @@
-﻿namespace OutdoorShop.Catalog.Domain.Product
+﻿using System.Collections.Generic;
+
+namespace OutdoorShop.Catalog.Domain.Product
 {
     public class ProductEntity : Entity
     {
@@ -11,5 +13,6 @@
         public string LargeImageUrl { get; set; }     
 
         public ProductCopyEntity Copy { get; internal set; }
+        public IReadOnlyList<ProductImageEntity> Images { get; internal set; }
     }
 }

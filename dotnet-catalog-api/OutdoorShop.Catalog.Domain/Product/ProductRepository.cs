@@ -34,9 +34,10 @@
         public async Task<ProductEntity> FetchById(long id)
         {
             const string productSql = "select * from catalog.products where id = @Id";
-            const string copySql = "select * from catalog.product_copy where product_Id = @Id";
+            const string copySql = "select * from catalog.product_copy where product_id = @Id";
+            const string imageSql = "select * from catalog.product_images where product_id = @Id";
 
-            var sql = productSql + ";" + copySql;
+            var sql = productSql + ";" + copySql + ";" + imageSql;
 
             ProductEntity product;
 
@@ -46,6 +47,7 @@
                 if (product != null)
                 {
                     product.Copy = multi.Read<ProductCopyEntity>().First();
+                    product.Images = multi.Read<ProductImageEntity>().ToList();
                 }
             }
             

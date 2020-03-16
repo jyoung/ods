@@ -13,6 +13,7 @@
             config.AddMap(new CategoryEntityMap());
             config.AddMap(new ProductEntityMap());
             config.AddMap(new ProductCopyEntityMap());
+            config.AddMap(new ProductImageEntityMap());
         }
     }
 }
