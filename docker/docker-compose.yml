@@ -1,0 +1,23 @@
+version: "3"
+services:
+    db:
+        image: crunchydata/crunchy-postgres:centos7-10.9-2.4.1
+        env_file:
+            - pg-env.list
+        volumes:
+            - pgvolume
+        ports:
+            - "5432:5432"
+        networks:
+            pgnetwork:
+                aliases:
+                    - postgres
+              
+volumes:
+    pgvolume:
+        driver: local
+        
+networks:
+    pgnetwork:
+        driver: bridge
+    
