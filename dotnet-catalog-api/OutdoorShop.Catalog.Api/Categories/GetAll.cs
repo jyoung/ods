@@ -1,12 +1,13 @@
 ﻿namespace OutdoorShop.Catalog.Api.Categories
 {
     using MediatR;
-    using OutdoorShop.Catalog.Domain.Category.Actions;
     using System.Linq;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Runtime.Serialization;
+    using OutdoorShop.Catalog.Domain;
+    using Microsoft.EntityFrameworkCore;
 
     public class GetAll
     {
@@ -17,40 +18,40 @@
 
         public class QueryHandler : IRequestHandler<Query, IEnumerable<Model>>
         {
-            private readonly IMediator mediator;
+            private readonly CategoryContext db;
 
-            public QueryHandler(IMediator mediator)
+            public QueryHandler(CategoryContext db)
             {
-                this.mediator = mediator;
+                this.db = db;
             }
 
             public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var parents = new List<Model>();
 
-                var categories = await mediator.Send(new GetAllCategories.Query());
-                              
-                var lookup = categories.ToLookup(x => x.ParentId);
+                var categories = await db.Categories
+                    .Where(x => x.Parent == null)
+                    .Include(x => x.Children)
+                    .ToListAsync();
+
 
                 Model parent = null;
 
                 foreach (var category in categories)
                 {
-                    if (category.ParentId.HasValue == false)
+                    if (category.Parent == null)
                     {
                         parent = new Model { Id = category.Id, Name = category.Name };
                         parents.Add(parent);
                     }
 
-                    if (lookup.Contains(category.Id) && parent != null)
+                    if (category.Children.Any() && parent != null)
                     {
-                        parent.Children = lookup[category.Id].Select(x => new Model { Id = x.Id, Name = x.Name }).ToList();
+                        parent.Children = category.Children.Select(x => new Model { Id = x.Id, Name = x.Name }).ToList();
                     }
                 }
 
                 return parents;
-
-                // TODO: Cache the parents model so we don't have to look them up again
             }
         }
 

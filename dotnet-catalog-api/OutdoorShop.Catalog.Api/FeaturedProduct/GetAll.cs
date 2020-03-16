@@ -1,13 +1,15 @@
 namespace OutdoorShop.Catalog.Api.FeaturedProduct
 {
+    using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
     using MediatR;
+    using Microsoft.EntityFrameworkCore;
     using OutdoorShop.Catalog.Api.SharedModels;
-    using OutdoorShop.Catalog.Domain.Product.Actions;
+    using OutdoorShop.Catalog.Domain;
 
     public class GetAll
     {
@@ -18,12 +20,12 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
 
         public class QueryHandler : IRequestHandler<Query, IEnumerable<Model>>
         {
-            private readonly IMediator mediator;
+            private readonly CategoryContext db;
             private readonly IMapper mapper;
 
-            public QueryHandler(IMediator mediator, IMapper mapper)
+            public QueryHandler(CategoryContext db, IMapper mapper)
             {
-                this.mediator = mediator;
+                this.db = db;
                 this.mapper = mapper;
             }
 
@@ -37,9 +39,31 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
                 //  build a collection of models based on the product
                 //  cache the collection
                 //  return the collection
-                var products = await mediator.Send(new GetFeaturedProducts.Query());
+                var products = await db.Products.ToListAsync();
 
-                return mapper.Map<IEnumerable<Model>>(products);
+                var featuredProducts = GetRandomSample(products, 10);
+                
+                return mapper.Map<IEnumerable<Model>>(featuredProducts);
+            }
+
+            private static IEnumerable<T> GetRandomSample<T>(IList<T> list, int sampleSize)
+            {
+                if (list == null) throw new ArgumentNullException("list");
+                if (sampleSize > list.Count) throw new ArgumentException("sampleSize may not be greater than list count", "sampleSize");
+
+                var indices = new Dictionary<int, int>(); int index;
+                var rnd = new Random();
+
+                for (int i = 0; i < sampleSize; i++)
+                {
+                    int j = rnd.Next(i, list.Count);
+                    if (!indices.TryGetValue(j, out index)) index = j;
+
+                    yield return list[index];
+
+                    if (!indices.TryGetValue(i, out index)) index = i;
+                    indices[j] = index;
+                }
             }
         }
 

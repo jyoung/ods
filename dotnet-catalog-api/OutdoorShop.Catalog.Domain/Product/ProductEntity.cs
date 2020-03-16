@@ -9,5 +9,7 @@
         public string RetailCurrency { get; set; }
         public string SmallImageUrl { get; set; }
         public string LargeImageUrl { get; set; }     
+
+        public ProductCopyEntity Copy { get; private set; }
     }
 }

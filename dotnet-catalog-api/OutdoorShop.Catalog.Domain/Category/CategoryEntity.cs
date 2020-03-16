@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-
-namespace OutdoorShop.Catalog.Domain.Category
+﻿namespace OutdoorShop.Catalog.Domain.Category
 {
+    using System.Collections.Generic;
+
     public class CategoryEntity : Entity
     {
-        public long? ParentId { get; set; }
+        public CategoryEntity Parent { get; set; }
         
         public string Name { get; set; }
 
-        public IEnumerable<CategoryEntity> Children { get; set; }
+        public IReadOnlyList<CategoryEntity> Children { get; set; }
     }
 }

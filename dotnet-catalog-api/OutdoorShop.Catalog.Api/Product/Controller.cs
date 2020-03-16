@@ -26,7 +26,7 @@ namespace OutdoorShop.Catalog.Api.Product
         [ProducesResponseType(404)]
         public async Task<ActionResult<GetById.Model>> GetByIdAsync(string id)
         {
-            var product = await mediator.Send(new GetById.Query {Id = id });
+            var product = await mediator.Send(new GetById.Query {Id = long.Parse(id)});
 
             if (product != null)
             {

@@ -24,9 +24,9 @@
     using System.Linq;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
-    using Dapper.FluentMap;
     using System.Data;
-    using Npgsql;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
 
 #pragma warning disable CS1591
     public class Startup
@@ -37,6 +37,7 @@
         }
 
         public IConfiguration Configuration { get; }
+        public static readonly ILoggerFactory ConsoleLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -87,7 +88,6 @@
                 x.IncludeXmlComments(xmlPath);
             });
 
-            FluentMapper.Initialize(config => EntityMaps.Initialize(config));
             AddApplicationServices(services);
         }
 
@@ -148,7 +148,10 @@
                 });
             });
             services.AddTransient(typeof(IDocumentRepository<>), typeof(DocumentRepository<>));
-            services.AddScoped<IDbConnection>(db => new NpgsqlConnection(connectionString));
+            services.AddDbContext<CategoryContext>(options => {
+                options.UseNpgsql(connectionString);
+                options.UseLoggerFactory(ConsoleLoggerFactory);
+            });
         }
 
         static OpenApiInfo CreateInfoForApiVersion( ApiVersionDescription description )
@@ -175,6 +178,7 @@
             var dataContractAttribute = currentClass.GetCustomAttribute<DataContractAttribute>();
             return dataContractAttribute != null && dataContractAttribute.Name != null ? dataContractAttribute.Name : currentClass.Name;
         }
+
 
         public class TagByApiExplorerSettingsOperationFilter : IOperationFilter
         {
