@@ -10,6 +10,6 @@
         public string SmallImageUrl { get; set; }
         public string LargeImageUrl { get; set; }     
 
-        public ProductCopyEntity Copy { get; private set; }
+        public ProductCopyEntity Copy { get; internal set; }
     }
 }

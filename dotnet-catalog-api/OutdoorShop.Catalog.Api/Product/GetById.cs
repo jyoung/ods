@@ -1,15 +1,11 @@
 namespace OutdoorShop.Catalog.Api.Product
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
     using MediatR;
-    using Microsoft.EntityFrameworkCore;
     using OutdoorShop.Catalog.Api.SharedModels;
-    using OutdoorShop.Catalog.Domain;
     using OutdoorShop.Catalog.Domain.Product;
 
     public class GetById
@@ -21,20 +17,18 @@ namespace OutdoorShop.Catalog.Api.Product
 
         public class QueryHandler : IRequestHandler<Query, Model>
         {
-            private readonly CategoryContext db;
+            private readonly IProductRepository repository;
             private readonly IMapper mapper;
 
-            public QueryHandler(CategoryContext db, IMapper mapper)
+            public QueryHandler(IProductRepository repository, IMapper mapper)
             {
-                this.db = db;
+                this.repository = repository;
                 this.mapper = mapper;
             }
 
             public async Task<Model> Handle(Query request, CancellationToken cancellationToken)
             {
-                var product = await db.Products
-                    .Include(x => x.Copy)
-                    .FirstOrDefaultAsync(x => x.Id == request.Id);
+                var product = await repository.FetchById(request.Id);
 
                 return mapper.Map<Model>(product);
             }

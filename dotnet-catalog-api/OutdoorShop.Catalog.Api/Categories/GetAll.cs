@@ -6,8 +6,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using System.Runtime.Serialization;
-    using OutdoorShop.Catalog.Domain;
-    using Microsoft.EntityFrameworkCore;
+    using OutdoorShop.Catalog.Domain.Category;
 
     public class GetAll
     {
@@ -18,36 +17,35 @@
 
         public class QueryHandler : IRequestHandler<Query, IEnumerable<Model>>
         {
-            private readonly CategoryContext db;
+            private readonly ICategoryRepository repository;
 
-            public QueryHandler(CategoryContext db)
+            public QueryHandler(ICategoryRepository repository)
             {
-                this.db = db;
+                this.repository = repository;
             }
 
             public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var parents = new List<Model>();
 
-                var categories = await db.Categories
-                    .Where(x => x.Parent == null)
-                    .Include(x => x.Children)
-                    .ToListAsync();
+                var categories = await repository.FetchAllAsync();
 
+                // convert the flat categories list to a heirarchy
+                var lookup = categories.ToLookup(x => x.ParentId);
 
                 Model parent = null;
 
                 foreach (var category in categories)
                 {
-                    if (category.Parent == null)
+                    if (category.ParentId.HasValue == false)
                     {
                         parent = new Model { Id = category.Id, Name = category.Name };
                         parents.Add(parent);
                     }
 
-                    if (category.Children.Any() && parent != null)
+                    if (lookup.Contains(category.Id) && parent != null)
                     {
-                        parent.Children = category.Children.Select(x => new Model { Id = x.Id, Name = x.Name }).ToList();
+                        parent.Children = lookup[category.Id].Select(x => new Model { Id = x.Id, Name = x.Name }).ToList();
                     }
                 }
 

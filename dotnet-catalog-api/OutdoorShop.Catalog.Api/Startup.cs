@@ -13,10 +13,6 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
     using OutdoorShop.Catalog.Domain;
-    using Microsoft.Azure.Documents.Client;
-    using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
     using Microsoft.OpenApi.Models;
     using Swashbuckle.AspNetCore.SwaggerGen;
     using Microsoft.AspNetCore.Mvc.Controllers;
@@ -25,8 +21,9 @@
     using System.Collections.Generic;
     using System.Runtime.Serialization;
     using System.Data;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using Npgsql;
+    using Dapper.FluentMap;
 
 #pragma warning disable CS1591
     public class Startup
@@ -139,18 +136,12 @@
                         
             services.AddMediatR(typeof(Startup).Assembly, typeof(Entity).Assembly);
             services.AddAutoMapper(typeof(Startup));
-            
-            services.AddSingleton<DocumentClient>(x => {
-                var options = x.GetService<IOptions<AzureAccountDetails>>();
-                return new DocumentClient(new Uri(options.Value.CosmosDbEndpoint), options.Value.CosmosDbKey, serializerSettings: new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                });
-            });
-            services.AddTransient(typeof(IDocumentRepository<>), typeof(DocumentRepository<>));
-            services.AddDbContext<CategoryContext>(options => {
-                options.UseNpgsql(connectionString);
-                options.UseLoggerFactory(ConsoleLoggerFactory);
+            services.AddDomainServices();
+
+            services.AddScoped<IDbConnection>(db => new NpgsqlConnection(connectionString));
+
+            FluentMapper.Initialize(config => {
+                EntityMaps.Initialize(config);
             });
         }
 

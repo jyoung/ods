@@ -10,6 +10,7 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
     using Microsoft.EntityFrameworkCore;
     using OutdoorShop.Catalog.Api.SharedModels;
     using OutdoorShop.Catalog.Domain;
+    using OutdoorShop.Catalog.Domain.Product;
 
     public class GetAll
     {
@@ -20,12 +21,12 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
 
         public class QueryHandler : IRequestHandler<Query, IEnumerable<Model>>
         {
-            private readonly CategoryContext db;
+            private readonly IProductRepository repository;
             private readonly IMapper mapper;
 
-            public QueryHandler(CategoryContext db, IMapper mapper)
+            public QueryHandler(IProductRepository repository, IMapper mapper)
             {
-                this.db = db;
+                this.repository = repository;
                 this.mapper = mapper;
             }
 
@@ -39,32 +40,13 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
                 //  build a collection of models based on the product
                 //  cache the collection
                 //  return the collection
-                var products = await db.Products.ToListAsync();
+                //var products = await db.Products.ToListAsync();
 
-                var featuredProducts = GetRandomSample(products, 10);
-                
+                var featuredProducts = await repository.FetchFeaturedProducts();
+
                 return mapper.Map<IEnumerable<Model>>(featuredProducts);
             }
 
-            private static IEnumerable<T> GetRandomSample<T>(IList<T> list, int sampleSize)
-            {
-                if (list == null) throw new ArgumentNullException("list");
-                if (sampleSize > list.Count) throw new ArgumentException("sampleSize may not be greater than list count", "sampleSize");
-
-                var indices = new Dictionary<int, int>(); int index;
-                var rnd = new Random();
-
-                for (int i = 0; i < sampleSize; i++)
-                {
-                    int j = rnd.Next(i, list.Count);
-                    if (!indices.TryGetValue(j, out index)) index = j;
-
-                    yield return list[index];
-
-                    if (!indices.TryGetValue(i, out index)) index = i;
-                    indices[j] = index;
-                }
-            }
         }
 
         [DataContract(Name = "FeaturedProduct")]
