@@ -7,10 +7,10 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
     using System.Threading.Tasks;
     using AutoMapper;
     using MediatR;
-    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Caching.Distributed;
     using OutdoorShop.Catalog.Api.SharedModels;
-    using OutdoorShop.Catalog.Domain;
     using OutdoorShop.Catalog.Domain.Product;
+    using System.Text.Json;
 
     public class GetAll
     {
@@ -23,11 +23,13 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
         {
             private readonly IProductRepository repository;
             private readonly IMapper mapper;
+            private readonly IDistributedCache cache;
 
-            public QueryHandler(IProductRepository repository, IMapper mapper)
+            public QueryHandler(IProductRepository repository, IMapper mapper, IDistributedCache cache)
             {
                 this.repository = repository;
                 this.mapper = mapper;
+                this.cache = cache;
             }
 
             public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
@@ -42,11 +44,30 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
                 //  return the collection
                 //var products = await db.Products.ToListAsync();
 
-                var featuredProducts = await repository.FetchFeaturedProducts();
+                const string cacheKey = "ods-featured-products";
 
-                return mapper.Map<IEnumerable<Model>>(featuredProducts);
+                var serializedProducts = await cache.GetStringAsync(cacheKey);
+
+                if (serializedProducts != null)
+                {
+                    var cachedProducts = JsonSerializer.Deserialize<List<ProductEntity>>(serializedProducts);
+                    return mapper.Map<IEnumerable<Model>>(cachedProducts);
+                }
+                else
+                {
+                    var featuredProducts = await repository.FetchFeaturedProducts();
+
+                    serializedProducts = JsonSerializer.Serialize(featuredProducts);
+
+                    var cacheOptions = new DistributedCacheEntryOptions()
+                                                .SetSlidingExpiration(TimeSpan.FromMinutes(5))
+                                                .SetAbsoluteExpiration(DateTime.UtcNow.AddHours(6));
+
+                    await cache.SetStringAsync(cacheKey, serializedProducts, cacheOptions);
+
+                    return mapper.Map<IEnumerable<Model>>(featuredProducts);
+                }
             }
-
         }
 
         [DataContract(Name = "FeaturedProduct")]
