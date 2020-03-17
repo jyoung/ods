@@ -1,8 +1,8 @@
 <div class="card mb-4 box-shadow">
-    <a [routerLink]="['product', id]"><img class="card-img-top" data-src="{{smallUrl}}" alt="Card image"></a>
+    <a [routerLink]="['../product', id]"><img class="card-img-top" data-src="{{smallUrl}}" alt="Card image"></a>
     <div class="card-body">
-        <h5 class="card-title"><a [routerLink]="['product', id]">{{title}}</a></h5>
-        <p class="card-text">{{shortDescription}}</p>
+        <h5 class="card-title"><a [routerLink]="['../product', id]">{{title}}</a></h5>
+        <p *ngIf="shortDescription" class="card-text">{{shortDescription}}</p>
         <div class="d-flex justify-content-center">
             <h2><span class="badge">{{price | currency}}</span>
             </h2>

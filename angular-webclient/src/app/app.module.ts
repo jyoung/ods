@@ -18,6 +18,7 @@ import { FeaturedProductsComponent } from './components/featured-products/featur
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CartComponent } from './components/cart/cart.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { CatalogPageComponent } from './pages/catalog-page/catalog-page.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
     FeaturedProductsComponent,
     HomePageComponent,
     CartComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    CatalogPageComponent
   ],
   imports: [
     BrowserModule,

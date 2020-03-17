@@ -1,6 +1,7 @@
 <ul class="navbar-nav">
     <li ngbDropdown class="nav-item" *ngFor="let category of categories$ | async">
-        <a class="nav-link" id="category-{{category.id}}" href="#">{{category.name}}</a>
+        <a class="nav-link" id="category-{{category.id}}" [routerLink]="['/catalog']"
+            [queryParams]="{ c: category.id}">{{category.name}}</a>
         <!-- <ng-container *ngIf="category.children.length > 0">
             <a ngbDropdownToggle class="nav-link" id="category-{{category.id}}" href="#">{{category.name}}</a>
             <div ngbDropdownMenu class="sub-menu" attr.aria-labelledby="category-{{category.id}}">
