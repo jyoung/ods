@@ -50,10 +50,11 @@
 
         private static void GrantPermissions()
         {
-            const string permissionsSql = "grant select, insert, update, delete on all tables in schema catalog to ods with grant option";
-            const string usageSql = "grant usage, select on all sequences in schema catalog to ods";
+            const string usageSql = "grant usage on schema catalog to ods;";
+            const string permissionsSql = "grant select, insert, update, delete on all tables in schema catalog to ods with grant option;";
+            const string sequencesSql = "grant usage, select on all sequences in schema catalog to ods;";
 
-            var combinedSql = permissionsSql + ";" + usageSql + ";";
+            var combinedSql = string.Join(usageSql, permissionsSql, sequencesSql);
 
             using (var connection = new NpgsqlConnection(Configuration["postgres-admin"]))
             {

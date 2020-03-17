@@ -1,6 +1,6 @@
 version: "3"
 services:
-    db:
+    postgres:
         image: crunchydata/crunchy-postgres:centos7-10.9-2.4.1
         env_file:
             - pg-env.list
@@ -9,15 +9,37 @@ services:
         ports:
             - "5432:5432"
         networks:
-            pgnetwork:
+            ods:
                 aliases:
                     - postgres
-              
+    pgadmin4:
+        image: crunchydata/crunchy-pgadmin4:centos7-10.9-2.4.1
+        env_file:
+            - pgadmin-env.list
+        volumes:
+            - pgavolume
+        ports:
+            - "5050:5050"
+        networks:
+            ods:
+                aliases:
+                    - pgadmin4
+    redis:
+        image: "bitnami/redis:latest"
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+        ports:
+            - "6379:6379"
+        networks:
+            ods:
+                aliases:
+                    - redis
 volumes:
     pgvolume:
         driver: local
-        
+    pgavolume:
+        driver: local
+
 networks:
-    pgnetwork:
+    ods:
         driver: bridge
-    

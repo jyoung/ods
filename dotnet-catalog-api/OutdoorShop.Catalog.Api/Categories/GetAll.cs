@@ -7,6 +7,9 @@
     using System.Threading.Tasks;
     using System.Runtime.Serialization;
     using OutdoorShop.Catalog.Domain.Category;
+    using Microsoft.Extensions.Caching.Distributed;
+    using System.Text.Json;
+    using System;
 
     public class GetAll
     {
@@ -18,13 +21,42 @@
         public class QueryHandler : IRequestHandler<Query, IEnumerable<Model>>
         {
             private readonly ICategoryRepository repository;
+            private readonly IDistributedCache cache;
 
-            public QueryHandler(ICategoryRepository repository)
+            public QueryHandler(ICategoryRepository repository, IDistributedCache cache)
             {
                 this.repository = repository;
+                this.cache = cache;
             }
 
             public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
+            {
+                const string cacheKey = "ods-categories";
+
+                List<Model> categories;
+
+                var serializedCategories = await cache.GetStringAsync(cacheKey);
+
+                if (serializedCategories != null)
+                {
+                    categories = JsonSerializer.Deserialize<List<Model>>(serializedCategories);
+                }
+                else
+                {
+                    categories = await GetCategories();
+                    serializedCategories = JsonSerializer.Serialize(categories);
+
+                    var cacheOptions = new DistributedCacheEntryOptions()
+                                                .SetSlidingExpiration(TimeSpan.FromMinutes(5))
+                                                .SetAbsoluteExpiration(DateTime.UtcNow.AddHours(6));
+
+                    await cache.SetStringAsync(cacheKey, serializedCategories, cacheOptions);
+                }
+                
+                return categories;
+            }
+
+            private async Task<List<Model>> GetCategories()
             {
                 var parents = new List<Model>();
 

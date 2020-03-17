@@ -2,7 +2,9 @@
 
 Setup a local Postgres install with Docker
 
-This guide based on https://info.crunchydata.com/blog/easy-postgresql-10-and-pgadmin-4-setup-with-docker
+This was guide was orignally based on https://info.crunchydata.com/blog/easy-postgresql-10-and-pgadmin-4-setup-with-docker
+
+It now works with docker compose to spin up postgres, pgadmin and redis.
 
 ## Set Config Values 
 Edit the pg-env and pgadmin-env files.
@@ -11,7 +13,7 @@ Replace the <config_value> value with your information.
 
 ## Run the Install Script
 
-`.\install-postgres`
+`docker-compose up`
 
 ## Configure pgAdmin
 
@@ -25,54 +27,32 @@ Replace the <config_value> value with your information.
 8. Enter your username and password from pg-env
 9. Select 'Save'
 
-## Setup Users
+## Migrations
 
-The Catalog API uses two database users; one to execute migrations, the other to execute commands.
+The OutdoorShop.Catalog.Migrations takes care of creating the all the schemas, tables and permissions. 
 
-The `postgres` user is used in the Catalog Migrations application to execute the DDL.
+The configuration is managed by dotnet-usersecrets so you will need to add a user secrtes for postgres-admin and postgres-user.
 
-The `ods` user is used the Catalog API to execute DML
+Run the migrations project to create the data structures.
 
-Remote into the postgres instance
+## Seed Data
 
-`docker exec -it postgres ./bin/bash`
+The OutdoorShop.Catalog.Seed seeds the database with test data.
 
-Create the ods database
-
-`createdb ods`
-
-Create the ods user, follow the prompts
-
-`createuser --interactive --pwprompt`
-
-Log into the ODS database as the postgres user
-
-`psql -d ods -U postgres`
-
-Create the catalog schema
-
-`create schema catalog;`
-
-Grant ods usage and sequence permission to the schema
-
-`grant usage, select on all sequences in schema catalog to ods;`
-
-Grant permissions to the ods user
-
-`grant select, insert, update, delete on all tables in schema catalog to ods with grant option;` 
+After the migrations have been run, run the seed project. It uses the same secrets as the migrations project.
 
 ## Managing
 To stop the containers
 
-`docker stop postgres pgadmin4`
+`docker-compose stop`
 
 To start the containers
 
-`docker start postgres pgadmin4`
+`docker-compose start`
 
-To remove the containers, first stop them then
+To remove the containers
 
-`docker rm postgres pgadmin4`
+`docker-compose down`
 
 
 

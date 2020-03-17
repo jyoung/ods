@@ -136,6 +136,10 @@
                         
             services.AddMediatR(typeof(Startup).Assembly, typeof(Entity).Assembly);
             services.AddAutoMapper(typeof(Startup));
+            services.AddDistributedRedisCache(opt => {
+                opt.Configuration = "localhost:6379";
+            });
+
             services.AddDomainServices();
 
             services.AddScoped<IDbConnection>(db => new NpgsqlConnection(connectionString));
