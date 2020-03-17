@@ -4,7 +4,7 @@
 
 export const Environment = {
   production: false,
-  CATALOG_API_URL: 'http://localhost:3000'
+  CATALOG_API_URL: 'https://localhost:5001'
 };
 
 /*

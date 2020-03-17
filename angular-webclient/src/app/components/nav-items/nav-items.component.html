@@ -1,6 +1,7 @@
 <ul class="navbar-nav">
     <li ngbDropdown class="nav-item" *ngFor="let category of categories$ | async">
-        <ng-container *ngIf="category.children.length > 0">
+        <a class="nav-link" id="category-{{category.id}}" href="#">{{category.name}}</a>
+        <!-- <ng-container *ngIf="category.children.length > 0">
             <a ngbDropdownToggle class="nav-link" id="category-{{category.id}}" href="#">{{category.name}}</a>
             <div ngbDropdownMenu class="sub-menu" attr.aria-labelledby="category-{{category.id}}">
                 <a ngbDropdownItem href="#" *ngFor="let child of category.children">{{child.name}}</a>
@@ -8,6 +9,6 @@
         </ng-container>
         <ng-container *ngIf="category.children.length == 0">
             <a class="nav-link" id="category-{{category.id}}" href="#">{{category.name}}</a>
-        </ng-container>
+        </ng-container> -->
     </li>
 </ul>

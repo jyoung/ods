@@ -206,48 +206,6 @@ export class CatalogClient {
     }
 }
 
-/** Brand Model */
-export class Brand implements IBrand {
-    id?: string | undefined;
-    name?: string | undefined;
-
-    constructor(data?: IBrand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-        }
-    }
-
-    static fromJS(data: any): Brand {
-        data = typeof data === 'object' ? data : {};
-        let result = new Brand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data; 
-    }
-}
-
-/** Brand Model */
-export interface IBrand {
-    id?: string | undefined;
-    name?: string | undefined;
-}
-
 export class Copy implements ICopy {
     description?: string | undefined;
     notes?: string | undefined;
@@ -380,58 +338,15 @@ export interface IImage {
     largeUrl?: string | undefined;
 }
 
-export class Category implements ICategory {
-    id?: string | undefined;
-    name?: string | undefined;
-
-    constructor(data?: ICategory) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-        }
-    }
-
-    static fromJS(data: any): Category {
-        data = typeof data === 'object' ? data : {};
-        let result = new Category();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data; 
-    }
-}
-
-export interface ICategory {
-    id?: string | undefined;
-    name?: string | undefined;
-}
-
 /** Product Model */
 export class ProductDetail implements IProductDetail {
     id?: number;
     title?: string | undefined;
     shortDescription?: string | undefined;
-    brand?: Brand;
     copy?: Copy;
     price?: Price;
-    salePrice?: Price;
     primaryImage?: Image;
     additionalImages?: Image[] | undefined;
-    categories?: Category[] | undefined;
 
     constructor(data?: IProductDetail) {
         if (data) {
@@ -447,20 +362,13 @@ export class ProductDetail implements IProductDetail {
             this.id = _data["id"];
             this.title = _data["title"];
             this.shortDescription = _data["shortDescription"];
-            this.brand = _data["brand"] ? Brand.fromJS(_data["brand"]) : <any>undefined;
             this.copy = _data["copy"] ? Copy.fromJS(_data["copy"]) : <any>undefined;
             this.price = _data["price"] ? Price.fromJS(_data["price"]) : <any>undefined;
-            this.salePrice = _data["salePrice"] ? Price.fromJS(_data["salePrice"]) : <any>undefined;
             this.primaryImage = _data["primaryImage"] ? Image.fromJS(_data["primaryImage"]) : <any>undefined;
             if (Array.isArray(_data["additionalImages"])) {
                 this.additionalImages = [] as any;
                 for (let item of _data["additionalImages"])
                     this.additionalImages!.push(Image.fromJS(item));
-            }
-            if (Array.isArray(_data["categories"])) {
-                this.categories = [] as any;
-                for (let item of _data["categories"])
-                    this.categories!.push(Category.fromJS(item));
             }
         }
     }
@@ -477,20 +385,13 @@ export class ProductDetail implements IProductDetail {
         data["id"] = this.id;
         data["title"] = this.title;
         data["shortDescription"] = this.shortDescription;
-        data["brand"] = this.brand ? this.brand.toJSON() : <any>undefined;
         data["copy"] = this.copy ? this.copy.toJSON() : <any>undefined;
         data["price"] = this.price ? this.price.toJSON() : <any>undefined;
-        data["salePrice"] = this.salePrice ? this.salePrice.toJSON() : <any>undefined;
         data["primaryImage"] = this.primaryImage ? this.primaryImage.toJSON() : <any>undefined;
         if (Array.isArray(this.additionalImages)) {
             data["additionalImages"] = [];
             for (let item of this.additionalImages)
                 data["additionalImages"].push(item.toJSON());
-        }
-        if (Array.isArray(this.categories)) {
-            data["categories"] = [];
-            for (let item of this.categories)
-                data["categories"].push(item.toJSON());
         }
         return data; 
     }
@@ -501,13 +402,10 @@ export interface IProductDetail {
     id?: number;
     title?: string | undefined;
     shortDescription?: string | undefined;
-    brand?: Brand;
     copy?: Copy;
     price?: Price;
-    salePrice?: Price;
     primaryImage?: Image;
     additionalImages?: Image[] | undefined;
-    categories?: Category[] | undefined;
 }
 
 export class ProblemDetails implements IProblemDetails {
@@ -564,10 +462,10 @@ export interface IProblemDetails {
 
 export class FeaturedProduct implements IFeaturedProduct {
     id?: number;
+    itemNumber?: string | undefined;
     title?: string | undefined;
     shortDescription?: string | undefined;
     price?: Price;
-    salePrice?: Price;
     primaryImage?: Image;
 
     constructor(data?: IFeaturedProduct) {
@@ -582,10 +480,10 @@ export class FeaturedProduct implements IFeaturedProduct {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.itemNumber = _data["itemNumber"];
             this.title = _data["title"];
             this.shortDescription = _data["shortDescription"];
             this.price = _data["price"] ? Price.fromJS(_data["price"]) : <any>undefined;
-            this.salePrice = _data["salePrice"] ? Price.fromJS(_data["salePrice"]) : <any>undefined;
             this.primaryImage = _data["primaryImage"] ? Image.fromJS(_data["primaryImage"]) : <any>undefined;
         }
     }
@@ -600,10 +498,10 @@ export class FeaturedProduct implements IFeaturedProduct {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["itemNumber"] = this.itemNumber;
         data["title"] = this.title;
         data["shortDescription"] = this.shortDescription;
         data["price"] = this.price ? this.price.toJSON() : <any>undefined;
-        data["salePrice"] = this.salePrice ? this.salePrice.toJSON() : <any>undefined;
         data["primaryImage"] = this.primaryImage ? this.primaryImage.toJSON() : <any>undefined;
         return data; 
     }
@@ -611,10 +509,10 @@ export class FeaturedProduct implements IFeaturedProduct {
 
 export interface IFeaturedProduct {
     id?: number;
+    itemNumber?: string | undefined;
     title?: string | undefined;
     shortDescription?: string | undefined;
     price?: Price;
-    salePrice?: Price;
     primaryImage?: Image;
 }
 
