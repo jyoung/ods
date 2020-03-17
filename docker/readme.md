@@ -27,11 +27,23 @@ Replace the <config_value> value with your information.
 8. Enter your username and password from pg-env
 9. Select 'Save'
 
+## User Secrets
+
+The dotnet projects are configured using the user-secrets dotnet tool.
+
+All the dotnet projects use the same secrets config, so you can add the secrets in the Api, Migrations, or Seed projects.
+
+Replace the values in < > with the values in your pg-env.list.
+
+`dotnet user-secrets set "postgres-user" "Server=127.0.0.1;Port=5432;Database=ods;User Id=<PG_USER>;Password=<PG_PASSWORD>;"`
+
+`dotnet user-secrets set "postgres-admin" "Server=127.0.0.1;Port=5432;Database=ods;User Id=postgres;Password=<PG_ROOT_PASSWORD>;"`
+
+`dotnet user-secrets set "redis-url" "localhost:6379"`
+
 ## Migrations
 
 The OutdoorShop.Catalog.Migrations takes care of creating the all the schemas, tables and permissions. 
-
-The configuration is managed by dotnet-usersecrets so you will need to add a user secrtes for postgres-admin and postgres-user.
 
 Run the migrations project to create the data structures.
 
@@ -39,7 +51,7 @@ Run the migrations project to create the data structures.
 
 The OutdoorShop.Catalog.Seed seeds the database with test data.
 
-After the migrations have been run, run the seed project. It uses the same secrets as the migrations project.
+After the migrations have been run, execute the seed project. 
 
 ## Managing
 To stop the containers

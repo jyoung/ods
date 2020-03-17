@@ -132,12 +132,13 @@
         }
         private void AddApplicationServices(IServiceCollection services)
         {
-            string connectionString = this.Configuration["postgres-user"];
+            var connectionString = this.Configuration["postgres-user"];
+            var redisUrl = this.Configuration["redis-url"];
                         
             services.AddMediatR(typeof(Startup).Assembly, typeof(Entity).Assembly);
             services.AddAutoMapper(typeof(Startup));
             services.AddDistributedRedisCache(opt => {
-                opt.Configuration = "localhost:6379";
+                opt.Configuration = redisUrl;
             });
 
             services.AddDomainServices();
