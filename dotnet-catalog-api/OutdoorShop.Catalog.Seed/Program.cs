@@ -1,8 +1,6 @@
 ﻿namespace OutdoorShop.Catalog.Seed
 {
     using System;
-    using System.Threading.Tasks;
-    using Microsoft.Azure.Documents.Client;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
@@ -27,9 +25,9 @@
                 .AddOptions()
                 .AddSingleton<ISecretRevealer, SecretRevealer>()
                 .AddSingleton<IDataLoader>(x => {
-                    //var options = x.GetService<IOptions<AzureAccountDetails>>();
-                    //return new CosmosDbDataLoader(new Uri(options.Value.CosmosDbEndpoint), options.Value.CosmosDbKey);
-                    return new PostgresDataLoader(Configuration["postgres-user"]);
+                    var options = x.GetService<IOptions<AzureAccountDetails>>();
+                    return new CosmosDbDataLoader(new Uri(options.Value.CosmosDbEndpoint), options.Value.CosmosDbKey);
+                    //return new PostgresDataLoader(Configuration["postgres-user"]);
                 })
                 .BuildServiceProvider();
 

@@ -10,6 +10,7 @@
     using Microsoft.Extensions.Caching.Distributed;
     using System.Text.Json;
     using System;
+    using OutdoorShop.Catalog.Domain;
 
     public class GetAll
     {
@@ -20,10 +21,10 @@
 
         public class QueryHandler : IRequestHandler<Query, IEnumerable<Model>>
         {
-            private readonly ICategoryRepository repository;
+            private readonly IDocumentRepository<CategoryDocument> repository;
             private readonly IDistributedCache cache;
 
-            public QueryHandler(ICategoryRepository repository, IDistributedCache cache)
+            public QueryHandler(IDocumentRepository<CategoryDocument> repository, IDistributedCache cache)
             {
                 this.repository = repository;
                 this.cache = cache;
@@ -60,25 +61,28 @@
             {
                 var parents = new List<Model>();
 
-                var categories = await repository.FetchAllAsync();
+                var categories = await repository.GetAllAsync();
 
                 // convert the flat categories list to a heirarchy
-                var lookup = categories.ToLookup(x => x.ParentId);
+                //var lookup = sortedCategories.ToLookup(x => x.ParentId);
 
-                Model parent = null;
+                //Model parent = null;
 
                 foreach (var category in categories)
                 {
-                    if (category.ParentId.HasValue == false)
-                    {
-                        parent = new Model { Id = category.Id, Name = category.Name };
-                        parents.Add(parent);
-                    }
+                    var parent = new Model() { Id = category.Id, Name = category.Name };
+                    parent.Children = category.SubCategories.Select(x => new Model() { Id = x.Id, Name = x.Name }).ToList();
+                    //if (category.ParentId != null)
+                    //{
+                    //    parent = new Model { Id = category.Id, Name = category.Name };
+                    //    parents.Add(parent);
+                    //}
 
-                    if (lookup.Contains(category.Id) && parent != null)
-                    {
-                        parent.Children = lookup[category.Id].Select(x => new Model { Id = x.Id, Name = x.Name }).ToList();
-                    }
+                    //if (lookup.Contains(category.Id) && parent != null)
+                    //{
+                    //    parent.Children = lookup[category.Id].Select(x => new Model { Id = x.Id, Name = x.Name }).ToList();
+                    //}
+                    parents.Add(parent);
                 }
 
                 return parents;
@@ -88,7 +92,7 @@
         [DataContract(Name = "CategoryTreeItem")]
         public class Model
         {
-            public long Id { get; set; }
+            public string Id { get; set; }
             public string Name { get; set; }
 
             public List<Model> Children { get; set; }

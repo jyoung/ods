@@ -11,6 +11,7 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
     using OutdoorShop.Catalog.Api.SharedModels;
     using OutdoorShop.Catalog.Domain.Product;
     using System.Text.Json;
+    using OutdoorShop.Catalog.Domain;
 
     public class GetAll
     {
@@ -21,11 +22,11 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
 
         public class QueryHandler : IRequestHandler<Query, IEnumerable<Model>>
         {
-            private readonly IProductRepository repository;
+            private readonly IDocumentRepository<FeaturedProductDocument> repository;
             private readonly IMapper mapper;
             private readonly IDistributedCache cache;
 
-            public QueryHandler(IProductRepository repository, IMapper mapper, IDistributedCache cache)
+            public QueryHandler(IDocumentRepository<FeaturedProductDocument> repository, IMapper mapper, IDistributedCache cache)
             {
                 this.repository = repository;
                 this.mapper = mapper;
@@ -34,7 +35,6 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
 
             public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
-                // TODO:
                 //  check if documents are in cache
                 //  if so, return cached documents
                 //  if not, fetch featured products from featured products repository
@@ -55,7 +55,7 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
                 }
                 else
                 {
-                    var featuredProducts = await repository.FetchFeaturedProducts();
+                    var featuredProducts = await repository.GetAllAsync();
 
                     serializedProducts = JsonSerializer.Serialize(featuredProducts);
 
@@ -74,7 +74,6 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
         public class Model
         {
             public long Id { get; set; }
-            public string ItemNumber { get; set; }
             public string Title { get; set; }
             public string ShortDescription { get; set; }
             public PriceModel Price { get; set; }

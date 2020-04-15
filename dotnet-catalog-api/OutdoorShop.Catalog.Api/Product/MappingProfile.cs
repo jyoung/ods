@@ -8,7 +8,7 @@ namespace OutdoorShop.Catalog.Api.Product
         public MappingProfile() 
         {
             // document -> model
-            //    CreateMap<ProductDocument, GetById.Model>();
+            CreateMap<ProductDocument, GetById.Model>();
 
             // entity -> model
             //CreateMap<ProductEntity, PriceModel>()
@@ -21,11 +21,11 @@ namespace OutdoorShop.Catalog.Api.Product
 
 
 
-            CreateMap<ProductEntity, GetById.Model>()
-                .ForMember(dest => dest.Price, opts => opts.MapFrom(src => src))
-                .ForMember(dest => dest.PrimaryImage, opts => opts.MapFrom(src => src))
-                .ForMember(dest => dest.Copy, opts => opts.MapFrom(src => src.Copy))
-                .ForMember(dest => dest.AdditionalImages, opts => opts.MapFrom(src => src.Images));
+            //CreateMap<ProductEntity, GetById.Model>()
+            //    .ForMember(dest => dest.Price, opts => opts.MapFrom(src => src))
+            //    .ForMember(dest => dest.PrimaryImage, opts => opts.MapFrom(src => src))
+            //    .ForMember(dest => dest.Copy, opts => opts.MapFrom(src => src.Copy))
+            //    .ForMember(dest => dest.AdditionalImages, opts => opts.MapFrom(src => src.Images));
                 
                                 
             

@@ -7,10 +7,13 @@ namespace OutdoorShop.Catalog.Api.FeaturedProduct
     {
         public MappingProfile() 
         {
+            // document -> model
+            CreateMap<FeaturedProductDocument, GetAll.Model>();
+
             // entity -> model
-            CreateMap<ProductEntity, GetAll.Model>()
-                .ForMember(dest => dest.Price, opts => opts.MapFrom(src => src))
-                .ForMember(dest => dest.PrimaryImage, opts => opts.MapFrom(src => src));
+            //CreateMap<ProductEntity, GetAll.Model>()
+            //    .ForMember(dest => dest.Price, opts => opts.MapFrom(src => src))
+            //    .ForMember(dest => dest.PrimaryImage, opts => opts.MapFrom(src => src));
 
             // model -> document
         }

@@ -10,6 +10,7 @@
         {
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient(typeof(IDocumentRepository<>), typeof(DocumentRepository<>));
         }
     }
 }

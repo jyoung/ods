@@ -13,8 +13,7 @@ export class CatalogPageComponent implements OnInit {
   private catalogService: CatalogService;
 
   public products$: Observable<FeaturedProduct[]>;
-
-  showSideBar = true;
+  public showSideBar = true;
 
   constructor(catalogService: CatalogService) {
     this.catalogService = catalogService;

@@ -7,6 +7,7 @@ namespace OutdoorShop.Catalog.Api.Product
     using AutoMapper;
     using MediatR;
     using OutdoorShop.Catalog.Api.SharedModels;
+    using OutdoorShop.Catalog.Domain;
     using OutdoorShop.Catalog.Domain.Product;
 
     public class GetById
@@ -18,10 +19,10 @@ namespace OutdoorShop.Catalog.Api.Product
 
         public class QueryHandler : IRequestHandler<Query, Model>
         {
-            private readonly IProductRepository repository;
+            private readonly IDocumentRepository<ProductDocument> repository;
             private readonly IMapper mapper;
 
-            public QueryHandler(IProductRepository repository, IMapper mapper)
+            public QueryHandler(IDocumentRepository<ProductDocument> repository, IMapper mapper)
             {
                 this.repository = repository;
                 this.mapper = mapper;
@@ -29,7 +30,7 @@ namespace OutdoorShop.Catalog.Api.Product
 
             public async Task<Model> Handle(Query request, CancellationToken cancellationToken)
             {
-                var product = await repository.FetchById(request.Id);
+                var product = await repository.GetAsync(request.Id.ToString());
 
                 return mapper.Map<Model>(product);
             }

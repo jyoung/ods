@@ -24,6 +24,10 @@
     using Microsoft.Extensions.Logging;
     using Npgsql;
     using Dapper.FluentMap;
+    using Microsoft.Azure.Documents.Client;
+    using Newtonsoft.Json.Serialization;
+    using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
 
 #pragma warning disable CS1591
     public class Startup
@@ -134,8 +138,16 @@
         {
             var connectionString = this.Configuration["postgres-user"];
             var redisUrl = this.Configuration["redis-url"];
-                        
-            services.AddMediatR(typeof(Startup).Assembly, typeof(Entity).Assembly);
+
+            services.AddSingleton<DocumentClient>(x => {
+                var options = x.GetService<IOptions<AzureAccountDetails>>();
+                return new DocumentClient(new Uri(options.Value.CosmosDbEndpoint), options.Value.CosmosDbKey, serializerSettings: new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+            });
+
+            services.AddMediatR(typeof(Startup).Assembly);
             services.AddAutoMapper(typeof(Startup));
             services.AddDistributedRedisCache(opt => {
                 opt.Configuration = redisUrl;
