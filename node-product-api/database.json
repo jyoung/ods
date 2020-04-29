@@ -1,0 +1,13 @@
+{
+    "dev": {
+        "driver": "pg",    
+        "user": {"ENV": "POSTGRES_USER"},
+        "password": {"ENV": "POSTGRES_PASS"},
+        "host": "localhost",
+        "database": "mydb",
+        "port": "20144",
+        "ssl": "true",
+        "schema": "my_schema"
+    }
+
+}

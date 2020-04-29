@@ -1,6 +1,6 @@
 PG_MODE=primary
-PG_PRIMARY_USER=jyoung
-PG_PRIMARY_PASSWORD=p4ssw0rd
+PG_PRIMARY_USER=<your_username>
+PG_PRIMARY_PASSWORD=<your_password>
 PG_DATABASE=ods
 PG_USER=ods
 PG_PASSWORD=p4ssw0rd
