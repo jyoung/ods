@@ -1,5 +1,5 @@
 PG_MODE=primary
-PG_PRIMARY_USER=<your_username>
+PG_PRIMARY_USER=<your_email>
 PG_PRIMARY_PASSWORD=<your_password>
 PG_DATABASE=ods
 PG_USER=ods
