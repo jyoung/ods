@@ -1,13 +1,12 @@
 {
-    "dev": {
+    "defaultEnv": {"ENV": "NODE_ENV"},
+    "development": {
         "driver": "pg",    
         "user": {"ENV": "POSTGRES_USER"},
         "password": {"ENV": "POSTGRES_PASS"},
         "host": "localhost",
-        "database": "mydb",
-        "port": "20144",
-        "ssl": "true",
-        "schema": "my_schema"
+        "database": "ods",
+        "port": "5432",
+        "schema": "ods"
     }
-
 }
