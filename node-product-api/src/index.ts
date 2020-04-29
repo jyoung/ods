@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 
+import * as routes from "./routes/index";
+
 // initialize configuration
 dotenv.config();
 
@@ -14,6 +16,9 @@ const app = express();
 app.get( "/", ( req, res ) => {
     res.send( "Hello world!" );
 } );
+
+// configure routes
+routes.register(app);
 
 // start the Express server
 app.listen( port, () => {
