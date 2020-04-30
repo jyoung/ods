@@ -2,9 +2,10 @@ import * as promise from 'bluebird'; // best promise library today
 import pgPromise from 'pg-promise'; // pg-promise core library
 import {Diagnostics} from './diagnostics'; // optional diagnostics
 import {IInitOptions, IDatabase, IMain} from 'pg-promise';
-import {IExtensions, BrandRepository} from './repos';
+import {IExtensions, BrandRepository} from './extenstions';
 
 type ExtendedProtocol = IDatabase<IExtensions> & IExtensions;
+
 
 // pg-promise initialization options:
 const initOptions: IInitOptions<IExtensions> = {

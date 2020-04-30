@@ -10,9 +10,3 @@ export interface Product
     largeImageUrl: string;
     brandId: number;
 }
-
-export interface Brand
-{
-    id: number;
-    name: string;
-}

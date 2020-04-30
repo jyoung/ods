@@ -1,6 +1,6 @@
 import {IDatabase, IMain} from 'pg-promise';
 // import {IResult} from 'pg-promise/typescript/pg-subset';
-import {Brand} from '../models';
+import { Brand } from "./brand.model";
 
 
 export class BrandRepository {
