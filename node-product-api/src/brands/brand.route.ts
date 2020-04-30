@@ -1,4 +1,5 @@
 import * as express from "express";
+import logger from '../config/logger';
 import {db} from '../db';
 
 export const register = (app: express.Application) => {
@@ -7,15 +8,19 @@ export const register = (app: express.Application) => {
         res.json({ message: "Ok" });
     });
 
-    app.get(`/api/brands`, async (req: any, res: express.Response) => {
+    app.get(`/api/brands`, async (req: express.Request, res: express.Response) => {
         try {
             const brands = await db.brands.all();
             return res.json(brands);
 
         } catch (err) {
-            // tslint:disable-next-line:no-console
-            console.error(err);
+            logger.error(err);
             res.json({ error: err.message || err });
         }
+    });
+
+    app.post(`/api/brands`, async (req: express.Request, res: express.Response) => {
+        res.statusCode = 201;
+        res.json(1);
     });
 }
