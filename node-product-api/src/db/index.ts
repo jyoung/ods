@@ -1,11 +1,15 @@
 import * as promise from 'bluebird'; // best promise library today
 import pgPromise from 'pg-promise'; // pg-promise core library
 import {Diagnostics} from './diagnostics'; // optional diagnostics
+import { POSTGRES_HOST, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASS } from "../config/env";
 import {IInitOptions, IDatabase, IMain} from 'pg-promise';
 import {IExtensions, BrandRepository} from './extenstions';
 
 type ExtendedProtocol = IDatabase<IExtensions> & IExtensions;
 
+// should this be called multiple times?
+// seems like it would be better to init the variables once, as in the main index file.
+// dotenv.config();
 
 // pg-promise initialization options:
 const initOptions: IInitOptions<IExtensions> = {
@@ -26,12 +30,17 @@ const initOptions: IInitOptions<IExtensions> = {
     }
 };
 
+const postgresHost = POSTGRES_HOST || "";
+const postgresPort = POSTGRES_PORT || 0;
+const postgresUser = POSTGRES_USER || "";
+const postgresPass = POSTGRES_PASS || "";
+
 const dbConfig = {
-    "host": "localhost",
-    "port": 5432,
-    "database": "pg-promise-demo",
-    "user": "postgres",
-    "password": ""
+    "host": postgresHost,
+    "port": +postgresPort,
+    "database": "ods",
+    "user": postgresUser,
+    "password": postgresPass
 }
 
 // Initializing the library:

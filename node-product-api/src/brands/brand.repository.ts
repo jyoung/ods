@@ -26,11 +26,11 @@ export class BrandRepository {
 
     // Returns all brands records;
     async all(): Promise<Brand[]> {
-        return this.db.any('SELECT * FROM brands');
+        return this.db.any('SELECT * FROM ods.brands');
     }
 
     // Returns the total number of brands;
     async total(): Promise<number> {
-        return this.db.one('SELECT count(*) FROM brands', [], (a: { count: string }) => +a.count);
+        return this.db.one('SELECT count(*) FROM ods.brands', [], (a: { count: string }) => +a.count);
     }
 }

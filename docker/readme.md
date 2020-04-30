@@ -27,6 +27,20 @@ Replace the <config_value> value with your information.
 8. Enter your username and password from pg-env
 9. Select 'Save'
 
+## Connect to Postgres
+
+Run `docker-compose run postgres bash` to get to the postgres bash.
+
+Execute `psql -h postgres -d ods -U postgres` to connect to to the ods database as the postgres super user.
+
+Execute `grant usage on schema ods to [your_username];` to get access to the ods schema in the ods database.
+
+Execute `grant all privileges on all tables in schema ods to [your_username];` to get access to all the tables in ods.
+
+Type `\q` to quit the ods connection.
+
+Type `ctrl+d` to quit the postgres bash.
+
 ## User Secrets
 
 The dotnet projects are configured using the user-secrets dotnet tool.

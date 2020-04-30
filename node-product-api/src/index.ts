@@ -1,13 +1,10 @@
 import express from "express";
-import dotenv from "dotenv";
+import { SERVER_PORT } from "./config/env";
 import * as routes from "./routes/index";
-
-// initialize configuration
-dotenv.config();
 
 // port is now available to the Node.js runtime
 // as if it were an environment variable
-const port = process.env.SERVER_PORT;
+const port = SERVER_PORT;
 
 const app = express();
 
