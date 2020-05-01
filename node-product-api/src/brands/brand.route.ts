@@ -1,6 +1,7 @@
 import * as express from "express";
 import logger from '../config/logger';
 import {db} from '../db';
+import { CreateCommand } from "./commands/create.command";
 
 export const register = (app: express.Application) => {
     // simple sanity check
@@ -20,6 +21,8 @@ export const register = (app: express.Application) => {
     });
 
     app.post(`/api/brands`, async (req: express.Request, res: express.Response) => {
+
+        
         res.statusCode = 201;
         res.json(1);
     });

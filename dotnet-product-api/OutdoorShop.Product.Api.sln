@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutdoorShop.Product.Api", "OutdoorShop.Product.Api\OutdoorShop.Product.Api.csproj", "{553A41F9-B60F-4E51-B6CC-21D9EB0389D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutdoorShop.Product.Api.Tests", "OutdoorShop.Product.Api.Tests\OutdoorShop.Product.Api.Tests.csproj", "{E222E0FC-C76E-4D9E-A474-2E8DBE088E16}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E322B11-A329-437B-8601-18DC6DF45B7D}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{553A41F9-B60F-4E51-B6CC-21D9EB0389D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{553A41F9-B60F-4E51-B6CC-21D9EB0389D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{553A41F9-B60F-4E51-B6CC-21D9EB0389D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{553A41F9-B60F-4E51-B6CC-21D9EB0389D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E222E0FC-C76E-4D9E-A474-2E8DBE088E16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E222E0FC-C76E-4D9E-A474-2E8DBE088E16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E222E0FC-C76E-4D9E-A474-2E8DBE088E16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E222E0FC-C76E-4D9E-A474-2E8DBE088E16}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1203B7E5-C1B3-4A9E-B472-513F0453E6DD}
+	EndGlobalSection
+EndGlobal
